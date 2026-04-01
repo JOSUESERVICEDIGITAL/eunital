@@ -27,7 +27,7 @@ use Spatie\Permission\Traits\HasRoles; // Ajouter cette ligne
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, HasRoles; 
+    use HasFactory, Notifiable, HasRoles;
     /**
      * Les attributs assignables en masse.
      *
@@ -149,6 +149,7 @@ public function estResponsable()
     {
         return $this->hasMany(ApplicationMobile::class, 'responsable_id');
     }
+
 
     public function sitesVitrines()
     {
