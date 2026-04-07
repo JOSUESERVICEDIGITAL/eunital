@@ -962,23 +962,23 @@
                     </div>
                 </li>
                 {{-- Chambre juridique --}}
-                {{-- Chambre juridique --}}
-                <li class="menu-dropdown-item {{ request()->routeIs('back.chambre-juridique.*') ? 'open' : '' }}">
-                    <button class="menu-item menu-toggle-btn" type="button" data-target="#menuChambreJuridique"
-                        aria-expanded="{{ request()->routeIs('back.chambre-juridique.*') ? 'true' : 'false' }}">
 
+
+                {{-- Chambre juridique --}}
+                <li class="menu-dropdown-item">
+                    <button class="menu-item menu-toggle-btn" type="button" data-target="#menuChambreJuridique"
+                        aria-expanded="{{ request()->routeIs('back.juridique.*') ? 'true' : 'false' }}">
                         <div class="menu-left">
                             <div class="menu-icon bg-secondary-subtle text-secondary">
                                 <i class="fa-solid fa-scale-balanced"></i>
                             </div>
                             <div class="menu-texts">
                                 <div class="menu-text">Chambre juridique</div>
-                                <div class="menu-subtext">Contrats, conformité, dossiers, archives</div>
+                                <div class="menu-subtext">Conformité, contrats, documents, RGPD</div>
                             </div>
                         </div>
-
                         <div class="menu-right">
-                            <span class="badge-pill">8</span>
+                            <span class="badge-pill">Juridique</span>
                             <i class="fa-solid fa-chevron-down menu-caret"></i>
                         </div>
                     </button>
@@ -986,73 +986,277 @@
                     <div class="submenu-wrap" id="menuChambreJuridique">
                         <ul class="submenu">
 
+                            {{-- DASHBOARD --}}
                             <li>
-                                <a href="{{ route('back.chambre-juridique.dashboard') }}"
-                                    class="submenu-link {{ request()->routeIs('back.chambre-juridique.dashboard') ? 'active' : '' }}">
-                                    {{-- <i class="fa-solid fa-chart-line me-2"></i> --}}
-                                    Dashboard juridique
+                                <a href="{{ route('back.juridique.dashboard') }}"
+                                    class="submenu-link {{ request()->routeIs('back.juridique.dashboard') ? 'active' : '' }}">
+                                    <i class="fa-solid fa-chart-line me-2"></i> Tableau de bord
                                 </a>
                             </li>
 
-                            <li>
-                                <a href="{{ route('back.chambre-juridique.contrats.toutes') }}"
-                                    class="submenu-link {{ request()->routeIs('back.chambre-juridique.contrats.*') ? 'active' : '' }}">
-                                    {{-- <i class="fa-solid fa-file-contract me-2"></i> --}}
-                                    Contrats
-                                </a>
+                            {{-- DOCUMENTS & SIGNATURES --}}
+                            <li class="submenu-nested-item">
+                                <button class="submenu-link submenu-toggle-btn" type="button"
+                                    data-target="#menuJuridiqueDocuments" aria-expanded="false">
+                                    <span><i class="fa-solid fa-file-alt me-2"></i> Documents & signatures</span>
+                                    <i class="fa-solid fa-chevron-down submenu-caret"></i>
+                                </button>
+                                <div class="nested-submenu-wrap" id="menuJuridiqueDocuments">
+                                    <ul class="nested-submenu">
+                                        <li><a href="{{ route('back.juridique.types-documents.index') }}"
+                                                class="nested-submenu-link">Types de documents</a></li>
+                                        <li><a href="{{ route('back.juridique.modeles.index') }}"
+                                                class="nested-submenu-link">Modèles de documents</a></li>
+                                        <li><a href="{{ route('back.juridique.documents.index') }}"
+                                                class="nested-submenu-link">Tous les documents</a></li>
+                                        <li><a href="{{ route('back.juridique.documents.create') }}"
+                                                class="nested-submenu-link">Nouveau document</a></li>
+                                        <li><a href="{{ route('back.juridique.generation.index') }}"
+                                                class="nested-submenu-link">Générer un document</a></li>
+                                        <li><a href="{{ route('back.juridique.documents.brouillons') }}"
+                                                class="nested-submenu-link">Brouillons</a></li>
+                                        <li><a href="{{ route('back.juridique.documents.en-attente') }}"
+                                                class="nested-submenu-link">En attente</a></li>
+                                        <li><a href="{{ route('back.juridique.documents.signes') }}"
+                                                class="nested-submenu-link">Documents signés</a></li>
+                                        <li><a href="{{ route('back.juridique.signatures.index') }}"
+                                                class="nested-submenu-link">Signatures</a></li>
+                                        <li><a href="{{ route('back.juridique.signatures.en-attente') }}"
+                                                class="nested-submenu-link">Signatures en attente</a></li>
+                                    </ul>
+                                </div>
                             </li>
 
-                            <li>
-                                <a href="{{ route('back.chambre-juridique.engagements.toutes') }}"
-                                    class="submenu-link {{ request()->routeIs('back.chambre-juridique.engagements.*') ? 'active' : '' }}">
-                                    {{-- <i class="fa-solid fa-file-signature me-2"></i> --}}
-                                    Engagements
-                                </a>
+                            {{-- CONTRATS & ENGAGEMENTS --}}
+                            <li class="submenu-nested-item">
+                                <button class="submenu-link submenu-toggle-btn" type="button"
+                                    data-target="#menuJuridiqueContrats" aria-expanded="false">
+                                    <span><i class="fa-solid fa-handshake me-2"></i> Contrats & engagements</span>
+                                    <i class="fa-solid fa-chevron-down submenu-caret"></i>
+                                </button>
+                                <div class="nested-submenu-wrap" id="menuJuridiqueContrats">
+                                    <ul class="nested-submenu">
+                                        <li><a href="{{ route('back.juridique.contrats.index') }}"
+                                                class="nested-submenu-link">Tous les contrats</a></li>
+                                        <li><a href="{{ route('back.juridique.contrats.create') }}"
+                                                class="nested-submenu-link">Nouveau contrat</a></li>
+                                        <li><a href="{{ route('back.juridique.contrats.actifs') }}"
+                                                class="nested-submenu-link">Contrats actifs</a></li>
+                                        <li><a href="{{ route('back.juridique.contrats.expirants') }}"
+                                                class="nested-submenu-link">Expirant bientôt</a></li>
+                                        <li><a href="{{ route('back.juridique.contrats.expires') }}"
+                                                class="nested-submenu-link">Contrats expirés</a></li>
+                                        <li><a href="{{ route('back.juridique.engagements.index') }}"
+                                                class="nested-submenu-link">Engagements</a></li>
+                                        <li><a href="{{ route('back.juridique.engagements.actifs') }}"
+                                                class="nested-submenu-link">Engagements actifs</a></li>
+                                    </ul>
+                                </div>
                             </li>
 
-                            <li>
-                                <a href="{{ route('back.chambre-juridique.modeles-documents.toutes') }}"
-                                    class="submenu-link {{ request()->routeIs('back.chambre-juridique.modeles-documents.*') ? 'active' : '' }}">
-                                    {{-- <i class="fa-solid fa-file-lines me-2"></i> --}}
-                                    Modèles de documents
-                                </a>
+                            {{-- CONFORMITÉ & RGPD --}}
+                            <li class="submenu-nested-item">
+                                <button class="submenu-link submenu-toggle-btn" type="button"
+                                    data-target="#menuJuridiqueConformite" aria-expanded="false">
+                                    <span><i class="fa-solid fa-shield-alt me-2"></i> Conformité & RGPD</span>
+                                    <i class="fa-solid fa-chevron-down submenu-caret"></i>
+                                </button>
+                                <div class="nested-submenu-wrap" id="menuJuridiqueConformite">
+                                    <ul class="nested-submenu">
+                                        <li><a href="{{ route('back.juridique.conformites.index') }}"
+                                                class="nested-submenu-link">Évaluations de conformité</a></li>
+                                        <li><a href="{{ route('back.juridique.conformites.conformes') }}"
+                                                class="nested-submenu-link">Conformes</a></li>
+                                        <li><a href="{{ route('back.juridique.conformites.non-conformes') }}"
+                                                class="nested-submenu-link">Non conformes</a></li>
+                                        <li><a href="{{ route('back.juridique.conformites.en-cours') }}"
+                                                class="nested-submenu-link">En cours</a></li>
+                                        <li><a href="{{ route('back.juridique.rgpd.index') }}"
+                                                class="nested-submenu-link">Démarches RGPD</a></li>
+                                        <li><a href="{{ route('back.juridique.rgpd.registre') }}"
+                                                class="nested-submenu-link">Registre RGPD</a></li>
+                                        <li><a href="{{ route('back.juridique.politiques.index') }}"
+                                                class="nested-submenu-link">Politique confidentialité</a></li>
+                                    </ul>
+                                </div>
                             </li>
 
-                            <li>
-                                <a href="{{ route('back.chambre-juridique.documents.toutes') }}"
-                                    class="submenu-link {{ request()->routeIs('back.chambre-juridique.documents.*') ? 'active' : '' }}">
-                                    {{-- <i class="fa-solid fa-folder-open me-2"></i> --}}
-                                    Documents juridiques
-                                </a>
+                            {{-- TEXTES LÉGAUX --}}
+                            <li class="submenu-nested-item">
+                                <button class="submenu-link submenu-toggle-btn" type="button"
+                                    data-target="#menuJuridiqueLegal" aria-expanded="false">
+                                    <span><i class="fa-solid fa-gavel me-2"></i> Textes légaux</span>
+                                    <i class="fa-solid fa-chevron-down submenu-caret"></i>
+                                </button>
+                                <div class="nested-submenu-wrap" id="menuJuridiqueLegal">
+                                    <ul class="nested-submenu">
+                                        <li><a href="{{ route('back.juridique.legalites.index') }}"
+                                                class="nested-submenu-link">Bibliothèque juridique</a></li>
+                                        <li><a href="{{ route('back.juridique.legalites.lois') }}"
+                                                class="nested-submenu-link">Lois</a></li>
+                                        <li><a href="{{ route('back.juridique.legalites.decrets') }}"
+                                                class="nested-submenu-link">Décrets</a></li>
+                                        <li><a href="{{ route('back.juridique.legalites.reglements') }}"
+                                                class="nested-submenu-link">Règlements</a></li>
+                                        <li><a href="{{ route('back.juridique.legalites.en-vigueur') }}"
+                                                class="nested-submenu-link">En vigueur</a></li>
+                                        <li><a href="{{ route('back.juridique.conseils.index') }}"
+                                                class="nested-submenu-link">Conseils juridiques</a></li>
+                                        <li><a href="{{ route('back.juridique.conseils.faq') }}"
+                                                class="nested-submenu-link">FAQ juridique</a></li>
+                                    </ul>
+                                </div>
                             </li>
 
-                            <li>
-                                <a href="{{ route('back.chambre-juridique.dossiers.toutes') }}"
-                                    class="submenu-link {{ request()->routeIs('back.chambre-juridique.dossiers.*') ? 'active' : '' }}">
-                                    {{-- <i class="fa-solid fa-briefcase me-2"></i> --}}
-                                    Dossiers juridiques
-                                </a>
+                            {{-- LITIGES --}}
+                            <li class="submenu-nested-item">
+                                <button class="submenu-link submenu-toggle-btn" type="button"
+                                    data-target="#menuJuridiqueLitiges" aria-expanded="false">
+                                    <span><i class="fa-solid fa-gavel me-2"></i> Litiges</span>
+                                    <i class="fa-solid fa-chevron-down submenu-caret"></i>
+                                </button>
+                                <div class="nested-submenu-wrap" id="menuJuridiqueLitiges">
+                                    <ul class="nested-submenu">
+                                        <li><a href="{{ route('back.juridique.litiges.index') }}"
+                                                class="nested-submenu-link">Tous les litiges</a></li>
+                                        <li><a href="{{ route('back.juridique.litiges.create') }}"
+                                                class="nested-submenu-link">Nouveau litige</a></li>
+                                        <li><a href="{{ route('back.juridique.litiges.ouverts') }}"
+                                                class="nested-submenu-link">Litiges ouverts</a></li>
+                                        <li><a href="{{ route('back.juridique.litiges.clos') }}"
+                                                class="nested-submenu-link">Litiges clos</a></li>
+                                    </ul>
+                                </div>
                             </li>
 
-                            <li>
-                                <a href="{{ route('back.chambre-juridique.archives-hub.toutes') }}"
-                                    class="submenu-link {{ request()->routeIs('back.chambre-juridique.archives-hub.*') ? 'active' : '' }}">
-                                    {{-- <i class="fa-solid fa-landmark me-2"></i> --}}
-                                    Archives du hub
-                                </a>
+                            {{-- DÉMARCHES ADMINISTRATIVES --}}
+                            <li class="submenu-nested-item">
+                                <button class="submenu-link submenu-toggle-btn" type="button"
+                                    data-target="#menuJuridiqueDemarches" aria-expanded="false">
+                                    <span><i class="fa-solid fa-building me-2"></i> Démarches
+                                        administratives</span>
+                                    <i class="fa-solid fa-chevron-down submenu-caret"></i>
+                                </button>
+                                <div class="nested-submenu-wrap" id="menuJuridiqueDemarches">
+                                    <ul class="nested-submenu">
+                                        <li><a href="{{ route('back.juridique.demarches.index') }}"
+                                                class="nested-submenu-link">Toutes les démarches</a></li>
+                                        <li><a href="{{ route('back.juridique.demarches.create') }}"
+                                                class="nested-submenu-link">Nouvelle démarche</a></li>
+                                        <li><a href="{{ route('back.juridique.demarches.en-cours') }}"
+                                                class="nested-submenu-link">Démarches actives</a></li>
+                                    </ul>
+                                </div>
                             </li>
 
-                            <li>
-                                <a href="{{ route('back.chambre-juridique.pieces-jointes.toutes') }}"
-                                    class="submenu-link {{ request()->routeIs('back.chambre-juridique.pieces-jointes.*') ? 'active' : '' }}">
-                                    {{-- <i class="fa-solid fa-paperclip me-2"></i> --}}
-                                    Pièces jointes
-                                </a>
+                            {{-- MENTIONS & CGU --}}
+                            <li class="submenu-nested-item">
+                                <button class="submenu-link submenu-toggle-btn" type="button"
+                                    data-target="#menuJuridiqueMentions" aria-expanded="false">
+                                    <span><i class="fa-solid fa-file-lines me-2"></i> Mentions & CGU</span>
+                                    <i class="fa-solid fa-chevron-down submenu-caret"></i>
+                                </button>
+                                <div class="nested-submenu-wrap" id="menuJuridiqueMentions">
+                                    <ul class="nested-submenu">
+                                        <li><a href="{{ route('back.juridique.mentions.index') }}"
+                                                class="nested-submenu-link">Mentions légales</a></li>
+                                        <li><a href="{{ route('back.juridique.mentions.actives') }}"
+                                                class="nested-submenu-link">Mentions actives</a></li>
+                                        <li><a href="{{ route('back.juridique.cgu.index') }}"
+                                                class="nested-submenu-link">CGU / CGV</a></li>
+                                        <li><a href="{{ route('back.juridique.cgu.cgu') }}"
+                                                class="nested-submenu-link">CGU en vigueur</a></li>
+                                        <li><a href="{{ route('back.juridique.cgu.cgv') }}"
+                                                class="nested-submenu-link">CGV en vigueur</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            {{-- ENTREPRISES --}}
+                            <li class="submenu-nested-item">
+                                <button class="submenu-link submenu-toggle-btn" type="button"
+                                    data-target="#menuJuridiqueEntreprises" aria-expanded="false">
+                                    <span><i class="fa-solid fa-building me-2"></i> Entreprises</span>
+                                    <i class="fa-solid fa-chevron-down submenu-caret"></i>
+                                </button>
+                                <div class="nested-submenu-wrap" id="menuJuridiqueEntreprises">
+                                    <ul class="nested-submenu">
+                                        <li><a href="{{ route('back.juridique.entreprises.index') }}"
+                                                class="nested-submenu-link">Toutes les entreprises</a></li>
+                                        <li><a href="{{ route('back.juridique.entreprises.create') }}"
+                                                class="nested-submenu-link">Ajouter une entreprise</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            {{-- ARCHIVES --}}
+                            <li class="submenu-nested-item">
+                                <button class="submenu-link submenu-toggle-btn" type="button"
+                                    data-target="#menuJuridiqueArchives" aria-expanded="false">
+                                    <span><i class="fa-solid fa-archive me-2"></i> Archives</span>
+                                    <i class="fa-solid fa-chevron-down submenu-caret"></i>
+                                </button>
+                                <div class="nested-submenu-wrap" id="menuJuridiqueArchives">
+                                    <ul class="nested-submenu">
+                                        <li><a href="{{ route('back.juridique.archives.index') }}"
+                                                class="nested-submenu-link">Toutes les archives</a></li>
+                                        <li><a href="{{ route('back.juridique.archives.documents') }}"
+                                                class="nested-submenu-link">Documents archivés</a></li>
+                                        <li><a href="{{ route('back.juridique.archives.contrats') }}"
+                                                class="nested-submenu-link">Contrats archivés</a></li>
+                                        <li><a href="{{ route('back.juridique.archives.litiges') }}"
+                                                class="nested-submenu-link">Litiges archivés</a></li>
+                                        <li><a href="{{ route('back.juridique.archives.politique') }}"
+                                                class="nested-submenu-link">Politique d'archivage</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            {{-- VALIDATION & NOTIFICATIONS --}}
+                            <li class="submenu-nested-item">
+                                <button class="submenu-link submenu-toggle-btn" type="button"
+                                    data-target="#menuJuridiqueValidation" aria-expanded="false">
+                                    <span><i class="fa-solid fa-check-circle me-2"></i> Validation &
+                                        notifications</span>
+                                    <i class="fa-solid fa-chevron-down submenu-caret"></i>
+                                </button>
+                                <div class="nested-submenu-wrap" id="menuJuridiqueValidation">
+                                    <ul class="nested-submenu">
+                                        <li><a href="{{ route('back.juridique.validation.index') }}"
+                                                class="nested-submenu-link">À valider</a></li>
+                                        <li><a href="{{ route('back.juridique.notifications.index') }}"
+                                                class="nested-submenu-link">Notifications</a></li>
+                                        <li><a href="{{ route('back.juridique.notifications.preferences') }}"
+                                                class="nested-submenu-link">Préférences</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            {{-- STATISTIQUES & EXPORTS --}}
+                            <li class="submenu-nested-item">
+                                <button class="submenu-link submenu-toggle-btn" type="button"
+                                    data-target="#menuJuridiqueStats" aria-expanded="false">
+                                    <span><i class="fa-solid fa-chart-pie me-2"></i> Statistiques & exports</span>
+                                    <i class="fa-solid fa-chevron-down submenu-caret"></i>
+                                </button>
+                                <div class="nested-submenu-wrap" id="menuJuridiqueStats">
+                                    <ul class="nested-submenu">
+                                        <li><a href="{{ route('back.juridique.statistiques.index') }}"
+                                                class="nested-submenu-link">Statistiques</a></li>
+                                        <li><a href="{{ route('back.juridique.recherche.index') }}"
+                                                class="nested-submenu-link">Recherche</a></li>
+                                        <li><a href="{{ route('back.juridique.export.index') }}"
+                                                class="nested-submenu-link">Exporter des données</a></li>
+                                    </ul>
+                                </div>
                             </li>
 
                         </ul>
                     </div>
                 </li>
+
+
+
 
                 {{-- Chambre RH --}}
                 <li class="menu-dropdown-item">
@@ -1196,8 +1400,8 @@
 
                 {{-- Autres chambres simples --}}
                 <li class="menu-dropdown-item">
-                    <button class="menu-item menu-toggle-btn" type="button" data-target="#menuChambreOrientations"
-                        aria-expanded="false">
+                    <button class="menu-item menu-toggle-btn" type="button"
+                        data-target="#menuChambreOrientations" aria-expanded="false">
                         <div class="menu-left">
                             <div class="menu-icon bg-primary-subtle text-primary">
                                 <i class="fa-solid fa-list-check"></i>
@@ -1501,6 +1705,31 @@
                                             <i class="fa-solid fa-plus me-2"></i> Ajouter un module
                                         </a>
                                     </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        {{-- Enseignants & formateurs --}}
+                        <li class="submenu-nested-item">
+                            <button class="submenu-link submenu-toggle-btn" type="button"
+                                data-target="#menuEnseignants" aria-expanded="false">
+                                <span><i class="fas fa-chalkboard-user me-2"></i> Enseignants & formateurs</span>
+                                <i class="fa-solid fa-chevron-down submenu-caret"></i>
+                            </button>
+                            <div class="nested-submenu-wrap" id="menuEnseignants">
+                                <ul class="nested-submenu">
+                                    <li><a href="{{ route('back.formation.enseignants.index') }}"
+                                            class="nested-submenu-link">Tous les enseignants</a></li>
+                                    <li><a href="{{ route('back.formation.enseignants.create') }}"
+                                            class="nested-submenu-link">Ajouter un enseignant</a></li>
+                                    <li><a href="{{ route('back.formation.enseignants.actifs') }}"
+                                            class="nested-submenu-link">Enseignants actifs</a></li>
+                                    <li>
+    <a href="{{ route('back.formation.enseignants.assigner') }}"
+       class="nested-submenu-link">
+        Assigner un cours
+    </a>
+</li>
                                 </ul>
                             </div>
                         </li>
@@ -2036,6 +2265,16 @@
                             </ul>
                         </div>
                     </li>
+
+
+
+
+
+
+
+
+
+
                 </ul>
 
                 <div class="support-box">

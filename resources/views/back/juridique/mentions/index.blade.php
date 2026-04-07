@@ -1,0 +1,6 @@
+@extends('back.juridique.layouts.app')
+@section('title', 'Mentions légales')
+@section('page_title', 'Gestion des mentions légales')
+@section('juridique-content')
+<div class="card"><div class="card-header"><h3 class="card-title"><i class="fas fa-file-alt mr-2"></i> Mentions légales</h3><div class="card-tools"><a href="{{ route('back.juridique.mentions.create') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Nouvelle mention</a></div></div><div class="card-body p-0"><table class="table"><thead><tr><th>Titre</th><th>Type</th><th>Version</th><th>Date effet</th><th>Statut</th><th>Actions</th></tr></thead><tbody>@forelse($mentions as $m)<tr><td><strong>{{ $m->titre }}</strong></td><td>{{ $m->type_label }}</td><td>v{{ $m->version }}</td><td>{{ $m->date_effet->format('d/m/Y') }}</td><td>@include('back.juridique.partials.status-badge', ['status' => $m->is_active ? 'actif' : 'inactif'])</td><td><a href="{{ route('back.juridique.mentions.show', $m) }}" class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a><a href="{{ route('back.juridique.mentions.edit', $m) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a></td></tr>@empty<tr><td colspan="6">Aucune mention légale</td></tr>@endforelse</tbody></table></div><div class="card-footer">@include('back.juridique.partials.pagination', ['items' => $mentions])</div></div>
+@endsection

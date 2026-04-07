@@ -1,0 +1,6 @@
+@extends('back.juridique.layouts.app')
+@section('title', 'RGPD')
+@section('page_title', 'Démarches RGPD')
+@section('juridique-content')
+<div class="card"><div class="card-header"><h3 class="card-title"><i class="fas fa-shield-heart mr-2"></i> Démarches RGPD</h3><div class="card-tools"><a href="{{ route('back.juridique.rgpd.create') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Nouvelle démarche</a></div></div><div class="card-body p-0"><table class="table"><thead><tr><th>Titre</th><th>Type</th><th>Statut</th><th>Date limite</th><th>Actions</th></tr></thead><tbody>@forelse($demarches as $d)</td><td><strong>{{ $d->titre }}</strong></td><td>{{ $d->type_label }}</td><td>@include('back.juridique.partials.status-badge', ['status' => $d->statut])</td><td>{{ $d->date_limite ? $d->date_limite->format('d/m/Y') : '-' }}</td><td><a href="{{ route('back.juridique.rgpd.show', $d) }}" class="btn btn-sm btn-info">Voir</a><a href="{{ route('back.juridique.rgpd.edit', $d) }}" class="btn btn-sm btn-warning">Modifier</a></td></tr>@empty<tr><td colspan="5">Aucune démarche</td></tr>@endforelse</tbody></table></div><div class="card-footer">@include('back.juridique.partials.pagination', ['items' => $demarches])</div></div>
+@endsection

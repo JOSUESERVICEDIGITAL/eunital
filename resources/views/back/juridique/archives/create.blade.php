@@ -1,0 +1,6 @@
+@extends('back.juridique.layouts.app')
+@section('title', 'Archiver')
+@section('page_title', 'Archiver un élément')
+@section('juridique-content')
+<div class="row"><div class="col-md-8"><div class="card"><div class="card-header">Informations</div><form action="{{ route('back.juridique.archives.store') }}" method="POST">@csrf<div class="card-body"><div class="form-group"><label for="item_type">Type d'élément</label><select name="item_type" id="item_type" class="form-control"><option value="document">Document</option><option value="contrat">Contrat</option><option value="litige">Litige</option></select></div><div class="form-group"><label for="item_id">ID de l'élément</label><input type="number" name="item_id" id="item_id" class="form-control" required></div><div class="form-group"><label for="motif">Motif de l'archivage</label><textarea name="motif" id="motif" rows="3" class="form-control"></textarea></div></div><div class="card-footer"><button type="submit" class="btn btn-primary">Archiver</button><a href="{{ route('back.juridique.archives.index') }}" class="btn btn-secondary">Annuler</a></div></form></div></div><div class="col-md-4"><div class="card"><div class="card-header">Informations</div><div class="card-body"><p>L'archivage conserve l'élément pour une durée définie par la politique de conservation.</p></div></div></div></div>
+@endsection

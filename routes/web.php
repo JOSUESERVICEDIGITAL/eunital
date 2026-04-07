@@ -73,14 +73,14 @@ use App\Http\Controllers\Back\ChambreGraphisme\UiuxDesignController;
 use App\Http\Controllers\Back\ChambreGraphisme\VisuelReseauSocialController;
 
 
-use App\Http\Controllers\Back\ChambreJuridique\ArchiveHubController;
-use App\Http\Controllers\Back\ChambreJuridique\ContratJuridiqueController;
-use App\Http\Controllers\Back\ChambreJuridique\DocumentJuridiqueController;
-use App\Http\Controllers\Back\ChambreJuridique\DossierJuridiqueController;
-use App\Http\Controllers\Back\ChambreJuridique\EngagementJuridiqueController;
-use App\Http\Controllers\Back\ChambreJuridique\JuridiqueDashboardController;
-use App\Http\Controllers\Back\ChambreJuridique\ModeleDocumentJuridiqueController;
-use App\Http\Controllers\Back\ChambreJuridique\PieceJointeJuridiqueController;
+// use App\Http\Controllers\Back\ChambreJuridique\ArchiveHubController;
+// use App\Http\Controllers\Back\ChambreJuridique\ContratJuridiqueController;
+// use App\Http\Controllers\Back\ChambreJuridique\DocumentJuridiqueController;
+// use App\Http\Controllers\Back\ChambreJuridique\DossierJuridiqueController;
+// use App\Http\Controllers\Back\ChambreJuridique\EngagementJuridiqueController;
+// use App\Http\Controllers\Back\ChambreJuridique\JuridiqueDashboardController;
+// use App\Http\Controllers\Back\ChambreJuridique\ModeleDocumentJuridiqueController;
+// use App\Http\Controllers\Back\ChambreJuridique\PieceJointeJuridiqueController;
 
 
 use App\Http\Controllers\Back\Formation\{
@@ -98,10 +98,39 @@ use App\Http\Controllers\Back\Formation\{
     CommentaireCoursController,
     ProgressionController,
     NotificationController,
-    ExportFormationController
+    ExportFormationController,
+    EnseignantController,
 };
 
 
+
+
+use App\Http\Controllers\Back\Juridique\{
+    DashboardJuridiqueController,
+    TypeDocumentController,
+    ModeleDocumentController,
+    DocumentController,
+    SignatureController,
+    ContratController,
+    EngagementController,
+    DemarcheAdministrativeController,
+    ConformiteController,
+    LitigeController,
+    ConseilJuridiqueController,
+    LegaliteController,
+    MentionLegaleController,
+    CguCgvController,
+    PolitiqueConfidentialiteController,
+    DemarcheRgpdController,
+    ArchiveJuridiqueController,
+    GenerationDocumentController,
+    ValidationJuridiqueController,
+    NotificationJuridiqueController,
+    StatistiqueJuridiqueController,
+    RechercheJuridiqueController,
+    ExportJuridiqueController,
+    EntrepriseController
+};
 
 
 Route::get('/', function () {
@@ -1005,610 +1034,605 @@ Route::prefix('back')->name('back.')->middleware(['auth'])->group(function () {
 
     // ______________________________chambre studio_______________________________
 
-Route::prefix('chambre-studio')->name('chambre-studio.')->group(function () {
+    Route::prefix('chambre-studio')->name('chambre-studio.')->group(function () {
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | DASHBOARD STUDIO
     |--------------------------------------------------------------------------
     */
-    Route::get('/dashboard', function () {
-        return view('back.chambre-studio.dashboard');
-    })->name('dashboard');
+        Route::get('/dashboard', function () {
+            return view('back.chambre-studio.dashboard');
+        })->name('dashboard');
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | PRODUCTIONS AUDIO
     |--------------------------------------------------------------------------
     */
-    Route::prefix('productions-audio')->name('productions-audio.')->group(function () {
-        Route::get('/', [ProductionAudioController::class, 'listeToutes'])->name('toutes');
-        Route::get('/enregistrement', [ProductionAudioController::class, 'listeEnregistrement'])->name('enregistrement');
-        Route::get('/mixage', [ProductionAudioController::class, 'listeMixage'])->name('mixage');
-        Route::get('/mastering', [ProductionAudioController::class, 'listeMastering'])->name('mastering');
-        Route::get('/livrees', [ProductionAudioController::class, 'listeLivrees'])->name('livrees');
+        Route::prefix('productions-audio')->name('productions-audio.')->group(function () {
+            Route::get('/', [ProductionAudioController::class, 'listeToutes'])->name('toutes');
+            Route::get('/enregistrement', [ProductionAudioController::class, 'listeEnregistrement'])->name('enregistrement');
+            Route::get('/mixage', [ProductionAudioController::class, 'listeMixage'])->name('mixage');
+            Route::get('/mastering', [ProductionAudioController::class, 'listeMastering'])->name('mastering');
+            Route::get('/livrees', [ProductionAudioController::class, 'listeLivrees'])->name('livrees');
 
-        Route::get('/creer', [ProductionAudioController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [ProductionAudioController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/creer', [ProductionAudioController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [ProductionAudioController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{productionAudio}', [ProductionAudioController::class, 'details'])->name('details');
-        Route::get('/{productionAudio}/modifier', [ProductionAudioController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{productionAudio}/update', [ProductionAudioController::class, 'mettreAJour'])->name('update');
+            Route::get('/{productionAudio}', [ProductionAudioController::class, 'details'])->name('details');
+            Route::get('/{productionAudio}/modifier', [ProductionAudioController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{productionAudio}/update', [ProductionAudioController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{productionAudio}/envoyer-en-mixage', [ProductionAudioController::class, 'envoyerEnMixage'])->name('envoyer_en_mixage');
-        Route::patch('/{productionAudio}/envoyer-en-mastering', [ProductionAudioController::class, 'envoyerEnMastering'])->name('envoyer_en_mastering');
-        Route::patch('/{productionAudio}/livrer', [ProductionAudioController::class, 'marquerCommeLivree'])->name('livrer');
-        Route::patch('/{productionAudio}/archiver', [ProductionAudioController::class, 'archiver'])->name('archiver');
+            Route::patch('/{productionAudio}/envoyer-en-mixage', [ProductionAudioController::class, 'envoyerEnMixage'])->name('envoyer_en_mixage');
+            Route::patch('/{productionAudio}/envoyer-en-mastering', [ProductionAudioController::class, 'envoyerEnMastering'])->name('envoyer_en_mastering');
+            Route::patch('/{productionAudio}/livrer', [ProductionAudioController::class, 'marquerCommeLivree'])->name('livrer');
+            Route::patch('/{productionAudio}/archiver', [ProductionAudioController::class, 'archiver'])->name('archiver');
 
-        Route::delete('/{productionAudio}/delete', [ProductionAudioController::class, 'supprimer'])->name('delete');
-    });
+            Route::delete('/{productionAudio}/delete', [ProductionAudioController::class, 'supprimer'])->name('delete');
+        });
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | PRODUCTIONS VIDEO
     |--------------------------------------------------------------------------
     */
-    Route::prefix('productions-video')->name('productions-video.')->group(function () {
-        Route::get('/', [ProductionVideoController::class, 'listeToutes'])->name('toutes');
-        Route::get('/tournage', [ProductionVideoController::class, 'listeTournage'])->name('tournage');
-        Route::get('/montage', [ProductionVideoController::class, 'listeMontage'])->name('montage');
-        Route::get('/validation', [ProductionVideoController::class, 'listeValidation'])->name('validation');
-        Route::get('/livrees', [ProductionVideoController::class, 'listeLivrees'])->name('livrees');
+        Route::prefix('productions-video')->name('productions-video.')->group(function () {
+            Route::get('/', [ProductionVideoController::class, 'listeToutes'])->name('toutes');
+            Route::get('/tournage', [ProductionVideoController::class, 'listeTournage'])->name('tournage');
+            Route::get('/montage', [ProductionVideoController::class, 'listeMontage'])->name('montage');
+            Route::get('/validation', [ProductionVideoController::class, 'listeValidation'])->name('validation');
+            Route::get('/livrees', [ProductionVideoController::class, 'listeLivrees'])->name('livrees');
 
-        Route::get('/creer', [ProductionVideoController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [ProductionVideoController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/creer', [ProductionVideoController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [ProductionVideoController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{productionVideo}', [ProductionVideoController::class, 'details'])->name('details');
-        Route::get('/{productionVideo}/modifier', [ProductionVideoController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{productionVideo}/update', [ProductionVideoController::class, 'mettreAJour'])->name('update');
+            Route::get('/{productionVideo}', [ProductionVideoController::class, 'details'])->name('details');
+            Route::get('/{productionVideo}/modifier', [ProductionVideoController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{productionVideo}/update', [ProductionVideoController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{productionVideo}/envoyer-en-montage', [ProductionVideoController::class, 'envoyerEnMontage'])->name('envoyer_en_montage');
-        Route::patch('/{productionVideo}/envoyer-en-validation', [ProductionVideoController::class, 'envoyerEnValidation'])->name('envoyer_en_validation');
-        Route::patch('/{productionVideo}/livrer', [ProductionVideoController::class, 'marquerCommeLivree'])->name('livrer');
-        Route::patch('/{productionVideo}/archiver', [ProductionVideoController::class, 'archiver'])->name('archiver');
+            Route::patch('/{productionVideo}/envoyer-en-montage', [ProductionVideoController::class, 'envoyerEnMontage'])->name('envoyer_en_montage');
+            Route::patch('/{productionVideo}/envoyer-en-validation', [ProductionVideoController::class, 'envoyerEnValidation'])->name('envoyer_en_validation');
+            Route::patch('/{productionVideo}/livrer', [ProductionVideoController::class, 'marquerCommeLivree'])->name('livrer');
+            Route::patch('/{productionVideo}/archiver', [ProductionVideoController::class, 'archiver'])->name('archiver');
 
-        Route::delete('/{productionVideo}/delete', [ProductionVideoController::class, 'supprimer'])->name('delete');
-    });
+            Route::delete('/{productionVideo}/delete', [ProductionVideoController::class, 'supprimer'])->name('delete');
+        });
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | COMMANDES STUDIO
     |--------------------------------------------------------------------------
     */
-    Route::prefix('commandes')->name('commandes.')->group(function () {
-        Route::get('/', [CommandeStudioController::class, 'listeToutes'])->name('toutes');
-        Route::get('/en-attente', [CommandeStudioController::class, 'listeEnAttente'])->name('en_attente');
-        Route::get('/en-cours', [CommandeStudioController::class, 'listeEnCours'])->name('en_cours');
-        Route::get('/livrees', [CommandeStudioController::class, 'listeLivrees'])->name('livrees');
+        Route::prefix('commandes')->name('commandes.')->group(function () {
+            Route::get('/', [CommandeStudioController::class, 'listeToutes'])->name('toutes');
+            Route::get('/en-attente', [CommandeStudioController::class, 'listeEnAttente'])->name('en_attente');
+            Route::get('/en-cours', [CommandeStudioController::class, 'listeEnCours'])->name('en_cours');
+            Route::get('/livrees', [CommandeStudioController::class, 'listeLivrees'])->name('livrees');
 
-        Route::get('/creer', [CommandeStudioController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [CommandeStudioController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/creer', [CommandeStudioController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [CommandeStudioController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{commandeStudio}', [CommandeStudioController::class, 'details'])->name('details');
+            Route::get('/{commandeStudio}', [CommandeStudioController::class, 'details'])->name('details');
 
-        Route::patch('/{commandeStudio}/valider', [CommandeStudioController::class, 'valider'])->name('valider');
-        Route::patch('/{commandeStudio}/livrer', [CommandeStudioController::class, 'livrer'])->name('livrer');
+            Route::patch('/{commandeStudio}/valider', [CommandeStudioController::class, 'valider'])->name('valider');
+            Route::patch('/{commandeStudio}/livrer', [CommandeStudioController::class, 'livrer'])->name('livrer');
 
-        Route::delete('/{commandeStudio}/delete', [CommandeStudioController::class, 'supprimer'])->name('delete');
-    });
+            Route::delete('/{commandeStudio}/delete', [CommandeStudioController::class, 'supprimer'])->name('delete');
+        });
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | RESERVATIONS STUDIO
     |--------------------------------------------------------------------------
     */
-    Route::prefix('reservations')->name('reservations.')->group(function () {
-        Route::get('/', [ReservationStudioController::class, 'listeToutes'])->name('toutes');
-        Route::get('/reservees', [ReservationStudioController::class, 'listeReservees'])->name('reservees');
-        Route::get('/confirmees', [ReservationStudioController::class, 'listeConfirmees'])->name('confirmees');
-        Route::get('/annulees', [ReservationStudioController::class, 'listeAnnulees'])->name('annulees');
-        Route::get('/aujourdhui', [ReservationStudioController::class, 'listeAujourdhui'])->name('aujourdhui');
+        Route::prefix('reservations')->name('reservations.')->group(function () {
+            Route::get('/', [ReservationStudioController::class, 'listeToutes'])->name('toutes');
+            Route::get('/reservees', [ReservationStudioController::class, 'listeReservees'])->name('reservees');
+            Route::get('/confirmees', [ReservationStudioController::class, 'listeConfirmees'])->name('confirmees');
+            Route::get('/annulees', [ReservationStudioController::class, 'listeAnnulees'])->name('annulees');
+            Route::get('/aujourdhui', [ReservationStudioController::class, 'listeAujourdhui'])->name('aujourdhui');
 
-        Route::get('/creer', [ReservationStudioController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [ReservationStudioController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/creer', [ReservationStudioController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [ReservationStudioController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{reservationStudio}', [ReservationStudioController::class, 'details'])->name('details');
-        Route::get('/{reservationStudio}/modifier', [ReservationStudioController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{reservationStudio}/update', [ReservationStudioController::class, 'mettreAJour'])->name('update');
+            Route::get('/{reservationStudio}', [ReservationStudioController::class, 'details'])->name('details');
+            Route::get('/{reservationStudio}/modifier', [ReservationStudioController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{reservationStudio}/update', [ReservationStudioController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{reservationStudio}/confirmer', [ReservationStudioController::class, 'confirmer'])->name('confirmer');
-        Route::patch('/{reservationStudio}/annuler', [ReservationStudioController::class, 'annuler'])->name('annuler');
+            Route::patch('/{reservationStudio}/confirmer', [ReservationStudioController::class, 'confirmer'])->name('confirmer');
+            Route::patch('/{reservationStudio}/annuler', [ReservationStudioController::class, 'annuler'])->name('annuler');
 
-        Route::delete('/{reservationStudio}/delete', [ReservationStudioController::class, 'supprimer'])->name('delete');
-    });
+            Route::delete('/{reservationStudio}/delete', [ReservationStudioController::class, 'supprimer'])->name('delete');
+        });
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | EVENEMENTS STUDIO
     |--------------------------------------------------------------------------
     */
-    Route::prefix('evenements')->name('evenements.')->group(function () {
-        Route::get('/', [EvenementStudioController::class, 'listeTous'])->name('tous');
-        Route::get('/planifies', [EvenementStudioController::class, 'listePlanifies'])->name('planifies');
-        Route::get('/realises', [EvenementStudioController::class, 'listeRealises'])->name('realises');
-        Route::get('/annules', [EvenementStudioController::class, 'listeAnnules'])->name('annules');
-        Route::get('/mariages', [EvenementStudioController::class, 'listeMariages'])->name('mariages');
+        Route::prefix('evenements')->name('evenements.')->group(function () {
+            Route::get('/', [EvenementStudioController::class, 'listeTous'])->name('tous');
+            Route::get('/planifies', [EvenementStudioController::class, 'listePlanifies'])->name('planifies');
+            Route::get('/realises', [EvenementStudioController::class, 'listeRealises'])->name('realises');
+            Route::get('/annules', [EvenementStudioController::class, 'listeAnnules'])->name('annules');
+            Route::get('/mariages', [EvenementStudioController::class, 'listeMariages'])->name('mariages');
 
-        Route::get('/creer', [EvenementStudioController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [EvenementStudioController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/creer', [EvenementStudioController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [EvenementStudioController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{evenementStudio}', [EvenementStudioController::class, 'details'])->name('details');
-        Route::get('/{evenementStudio}/modifier', [EvenementStudioController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{evenementStudio}/update', [EvenementStudioController::class, 'mettreAJour'])->name('update');
+            Route::get('/{evenementStudio}', [EvenementStudioController::class, 'details'])->name('details');
+            Route::get('/{evenementStudio}/modifier', [EvenementStudioController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{evenementStudio}/update', [EvenementStudioController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{evenementStudio}/marquer-realise', [EvenementStudioController::class, 'marquerCommeRealise'])->name('marquer_realise');
-        Route::patch('/{evenementStudio}/annuler', [EvenementStudioController::class, 'annuler'])->name('annuler');
+            Route::patch('/{evenementStudio}/marquer-realise', [EvenementStudioController::class, 'marquerCommeRealise'])->name('marquer_realise');
+            Route::patch('/{evenementStudio}/annuler', [EvenementStudioController::class, 'annuler'])->name('annuler');
 
-        Route::delete('/{evenementStudio}/delete', [EvenementStudioController::class, 'supprimer'])->name('delete');
-    });
+            Route::delete('/{evenementStudio}/delete', [EvenementStudioController::class, 'supprimer'])->name('delete');
+        });
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | CAPTATIONS STUDIO
     |--------------------------------------------------------------------------
     */
-    Route::prefix('captations')->name('captations.')->group(function () {
-        Route::get('/', [CaptationStudioController::class, 'listeToutes'])->name('toutes');
-        Route::get('/planifiees', [CaptationStudioController::class, 'listePlanifiees'])->name('planifiees');
-        Route::get('/en-cours', [CaptationStudioController::class, 'listeEnCours'])->name('en_cours');
-        Route::get('/terminees', [CaptationStudioController::class, 'listeTerminees'])->name('terminees');
-        Route::get('/mariages', [CaptationStudioController::class, 'listeMariages'])->name('mariages');
-        Route::get('/evenements', [CaptationStudioController::class, 'listeEvenements'])->name('evenements');
+        Route::prefix('captations')->name('captations.')->group(function () {
+            Route::get('/', [CaptationStudioController::class, 'listeToutes'])->name('toutes');
+            Route::get('/planifiees', [CaptationStudioController::class, 'listePlanifiees'])->name('planifiees');
+            Route::get('/en-cours', [CaptationStudioController::class, 'listeEnCours'])->name('en_cours');
+            Route::get('/terminees', [CaptationStudioController::class, 'listeTerminees'])->name('terminees');
+            Route::get('/mariages', [CaptationStudioController::class, 'listeMariages'])->name('mariages');
+            Route::get('/evenements', [CaptationStudioController::class, 'listeEvenements'])->name('evenements');
 
-        Route::get('/creer', [CaptationStudioController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [CaptationStudioController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/creer', [CaptationStudioController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [CaptationStudioController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{captationStudio}', [CaptationStudioController::class, 'details'])->name('details');
-        Route::get('/{captationStudio}/modifier', [CaptationStudioController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{captationStudio}/update', [CaptationStudioController::class, 'mettreAJour'])->name('update');
+            Route::get('/{captationStudio}', [CaptationStudioController::class, 'details'])->name('details');
+            Route::get('/{captationStudio}/modifier', [CaptationStudioController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{captationStudio}/update', [CaptationStudioController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{captationStudio}/demarrer', [CaptationStudioController::class, 'demarrer'])->name('demarrer');
-        Route::patch('/{captationStudio}/terminer', [CaptationStudioController::class, 'terminer'])->name('terminer');
+            Route::patch('/{captationStudio}/demarrer', [CaptationStudioController::class, 'demarrer'])->name('demarrer');
+            Route::patch('/{captationStudio}/terminer', [CaptationStudioController::class, 'terminer'])->name('terminer');
 
-        Route::delete('/{captationStudio}/delete', [CaptationStudioController::class, 'supprimer'])->name('delete');
-    });
+            Route::delete('/{captationStudio}/delete', [CaptationStudioController::class, 'supprimer'])->name('delete');
+        });
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | MONTAGES STUDIO
     |--------------------------------------------------------------------------
     */
-    Route::prefix('montages')->name('montages.')->group(function () {
-        Route::get('/', [MontageStudioController::class, 'listeTous'])->name('tous');
-        Route::get('/brouillons', [MontageStudioController::class, 'listeBrouillons'])->name('brouillons');
-        Route::get('/en-cours', [MontageStudioController::class, 'listeEnCours'])->name('en_cours');
-        Route::get('/valides', [MontageStudioController::class, 'listeValides'])->name('valides');
-        Route::get('/livres', [MontageStudioController::class, 'listeLivres'])->name('livres');
+        Route::prefix('montages')->name('montages.')->group(function () {
+            Route::get('/', [MontageStudioController::class, 'listeTous'])->name('tous');
+            Route::get('/brouillons', [MontageStudioController::class, 'listeBrouillons'])->name('brouillons');
+            Route::get('/en-cours', [MontageStudioController::class, 'listeEnCours'])->name('en_cours');
+            Route::get('/valides', [MontageStudioController::class, 'listeValides'])->name('valides');
+            Route::get('/livres', [MontageStudioController::class, 'listeLivres'])->name('livres');
 
-        Route::get('/creer', [MontageStudioController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [MontageStudioController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/creer', [MontageStudioController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [MontageStudioController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{montageStudio}', [MontageStudioController::class, 'details'])->name('details');
-        Route::get('/{montageStudio}/modifier', [MontageStudioController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{montageStudio}/update', [MontageStudioController::class, 'mettreAJour'])->name('update');
+            Route::get('/{montageStudio}', [MontageStudioController::class, 'details'])->name('details');
+            Route::get('/{montageStudio}/modifier', [MontageStudioController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{montageStudio}/update', [MontageStudioController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{montageStudio}/valider', [MontageStudioController::class, 'valider'])->name('valider');
-        Route::patch('/{montageStudio}/livrer', [MontageStudioController::class, 'livrer'])->name('livrer');
+            Route::patch('/{montageStudio}/valider', [MontageStudioController::class, 'valider'])->name('valider');
+            Route::patch('/{montageStudio}/livrer', [MontageStudioController::class, 'livrer'])->name('livrer');
 
-        Route::delete('/{montageStudio}/delete', [MontageStudioController::class, 'supprimer'])->name('delete');
-    });
+            Route::delete('/{montageStudio}/delete', [MontageStudioController::class, 'supprimer'])->name('delete');
+        });
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | DIFFUSIONS STUDIO
     |--------------------------------------------------------------------------
     */
-    Route::prefix('diffusions')->name('diffusions.')->group(function () {
-        Route::get('/', [DiffusionStudioController::class, 'listeToutes'])->name('toutes');
-        Route::get('/planifiees', [DiffusionStudioController::class, 'listePlanifiees'])->name('planifiees');
-        Route::get('/en-cours', [DiffusionStudioController::class, 'listeEnCours'])->name('en_cours');
-        Route::get('/terminees', [DiffusionStudioController::class, 'listeTerminees'])->name('terminees');
+        Route::prefix('diffusions')->name('diffusions.')->group(function () {
+            Route::get('/', [DiffusionStudioController::class, 'listeToutes'])->name('toutes');
+            Route::get('/planifiees', [DiffusionStudioController::class, 'listePlanifiees'])->name('planifiees');
+            Route::get('/en-cours', [DiffusionStudioController::class, 'listeEnCours'])->name('en_cours');
+            Route::get('/terminees', [DiffusionStudioController::class, 'listeTerminees'])->name('terminees');
 
-        Route::get('/creer', [DiffusionStudioController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [DiffusionStudioController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/creer', [DiffusionStudioController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [DiffusionStudioController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{diffusionStudio}', [DiffusionStudioController::class, 'details'])->name('details');
-        Route::get('/{diffusionStudio}/modifier', [DiffusionStudioController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{diffusionStudio}/update', [DiffusionStudioController::class, 'mettreAJour'])->name('update');
+            Route::get('/{diffusionStudio}', [DiffusionStudioController::class, 'details'])->name('details');
+            Route::get('/{diffusionStudio}/modifier', [DiffusionStudioController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{diffusionStudio}/update', [DiffusionStudioController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{diffusionStudio}/demarrer', [DiffusionStudioController::class, 'demarrer'])->name('demarrer');
-        Route::patch('/{diffusionStudio}/terminer', [DiffusionStudioController::class, 'terminer'])->name('terminer');
+            Route::patch('/{diffusionStudio}/demarrer', [DiffusionStudioController::class, 'demarrer'])->name('demarrer');
+            Route::patch('/{diffusionStudio}/terminer', [DiffusionStudioController::class, 'terminer'])->name('terminer');
 
-        Route::delete('/{diffusionStudio}/delete', [DiffusionStudioController::class, 'supprimer'])->name('delete');
-    });
+            Route::delete('/{diffusionStudio}/delete', [DiffusionStudioController::class, 'supprimer'])->name('delete');
+        });
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | CLIENTS STUDIO
     |--------------------------------------------------------------------------
     */
-    Route::prefix('clients')->name('clients.')->group(function () {
-        Route::get('/', [ClientStudioController::class, 'listeTous'])->name('tous');
-        Route::get('/artistes', [ClientStudioController::class, 'listeArtistes'])->name('artistes');
-        Route::get('/entreprises', [ClientStudioController::class, 'listeEntreprises'])->name('entreprises');
+        Route::prefix('clients')->name('clients.')->group(function () {
+            Route::get('/', [ClientStudioController::class, 'listeTous'])->name('tous');
+            Route::get('/artistes', [ClientStudioController::class, 'listeArtistes'])->name('artistes');
+            Route::get('/entreprises', [ClientStudioController::class, 'listeEntreprises'])->name('entreprises');
 
-        Route::get('/creer', [ClientStudioController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [ClientStudioController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/creer', [ClientStudioController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [ClientStudioController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{clientStudio}', [ClientStudioController::class, 'details'])->name('details');
+            Route::get('/{clientStudio}', [ClientStudioController::class, 'details'])->name('details');
 
-        Route::delete('/{clientStudio}/delete', [ClientStudioController::class, 'supprimer'])->name('delete');
-    });
+            Route::delete('/{clientStudio}/delete', [ClientStudioController::class, 'supprimer'])->name('delete');
+        });
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | PROJETS STUDIO
     |--------------------------------------------------------------------------
     */
-    Route::prefix('projets')->name('projets.')->group(function () {
-        Route::get('/', [ProjetStudioController::class, 'listeTous'])->name('tous');
-        Route::get('/actifs', [ProjetStudioController::class, 'listeActifs'])->name('actifs');
-        Route::get('/termines', [ProjetStudioController::class, 'listeTermines'])->name('termines');
-        Route::get('/archives', [ProjetStudioController::class, 'listeArchives'])->name('archives');
+        Route::prefix('projets')->name('projets.')->group(function () {
+            Route::get('/', [ProjetStudioController::class, 'listeTous'])->name('tous');
+            Route::get('/actifs', [ProjetStudioController::class, 'listeActifs'])->name('actifs');
+            Route::get('/termines', [ProjetStudioController::class, 'listeTermines'])->name('termines');
+            Route::get('/archives', [ProjetStudioController::class, 'listeArchives'])->name('archives');
 
-        Route::get('/creer', [ProjetStudioController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [ProjetStudioController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/creer', [ProjetStudioController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [ProjetStudioController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{projetStudio}', [ProjetStudioController::class, 'details'])->name('details');
-        Route::get('/{projetStudio}/modifier', [ProjetStudioController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{projetStudio}/update', [ProjetStudioController::class, 'mettreAJour'])->name('update');
+            Route::get('/{projetStudio}', [ProjetStudioController::class, 'details'])->name('details');
+            Route::get('/{projetStudio}/modifier', [ProjetStudioController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{projetStudio}/update', [ProjetStudioController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{projetStudio}/terminer', [ProjetStudioController::class, 'terminer'])->name('terminer');
-        Route::patch('/{projetStudio}/archiver', [ProjetStudioController::class, 'archiver'])->name('archiver');
+            Route::patch('/{projetStudio}/terminer', [ProjetStudioController::class, 'terminer'])->name('terminer');
+            Route::patch('/{projetStudio}/archiver', [ProjetStudioController::class, 'archiver'])->name('archiver');
 
-        Route::delete('/{projetStudio}/delete', [ProjetStudioController::class, 'supprimer'])->name('delete');
-    });
+            Route::delete('/{projetStudio}/delete', [ProjetStudioController::class, 'supprimer'])->name('delete');
+        });
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | EQUIPEMENTS STUDIO
     |--------------------------------------------------------------------------
     */
-    Route::prefix('equipements')->name('equipements.')->group(function () {
-        Route::get('/', [EquipementStudioController::class, 'listeTous'])->name('tous');
-        Route::get('/disponibles', [EquipementStudioController::class, 'listeDisponibles'])->name('disponibles');
-        Route::get('/indisponibles', [EquipementStudioController::class, 'listeIndisponibles'])->name('indisponibles');
-        Route::get('/maintenance', [EquipementStudioController::class, 'listeMaintenance'])->name('maintenance');
+        Route::prefix('equipements')->name('equipements.')->group(function () {
+            Route::get('/', [EquipementStudioController::class, 'listeTous'])->name('tous');
+            Route::get('/disponibles', [EquipementStudioController::class, 'listeDisponibles'])->name('disponibles');
+            Route::get('/indisponibles', [EquipementStudioController::class, 'listeIndisponibles'])->name('indisponibles');
+            Route::get('/maintenance', [EquipementStudioController::class, 'listeMaintenance'])->name('maintenance');
 
-        Route::get('/creer', [EquipementStudioController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [EquipementStudioController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/creer', [EquipementStudioController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [EquipementStudioController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{equipementStudio}', [EquipementStudioController::class, 'details'])->name('details');
-        Route::get('/{equipementStudio}/modifier', [EquipementStudioController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{equipementStudio}/update', [EquipementStudioController::class, 'mettreAJour'])->name('update');
+            Route::get('/{equipementStudio}', [EquipementStudioController::class, 'details'])->name('details');
+            Route::get('/{equipementStudio}/modifier', [EquipementStudioController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{equipementStudio}/update', [EquipementStudioController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{equipementStudio}/marquer-indisponible', [EquipementStudioController::class, 'marquerIndisponible'])->name('marquer_indisponible');
-        Route::patch('/{equipementStudio}/marquer-disponible', [EquipementStudioController::class, 'marquerDisponible'])->name('marquer_disponible');
-        Route::patch('/{equipementStudio}/mettre-en-maintenance', [EquipementStudioController::class, 'mettreEnMaintenance'])->name('mettre_en_maintenance');
+            Route::patch('/{equipementStudio}/marquer-indisponible', [EquipementStudioController::class, 'marquerIndisponible'])->name('marquer_indisponible');
+            Route::patch('/{equipementStudio}/marquer-disponible', [EquipementStudioController::class, 'marquerDisponible'])->name('marquer_disponible');
+            Route::patch('/{equipementStudio}/mettre-en-maintenance', [EquipementStudioController::class, 'mettreEnMaintenance'])->name('mettre_en_maintenance');
 
-        Route::delete('/{equipementStudio}/delete', [EquipementStudioController::class, 'supprimer'])->name('delete');
-    });
+            Route::delete('/{equipementStudio}/delete', [EquipementStudioController::class, 'supprimer'])->name('delete');
+        });
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | HABILLAGES SONORES
     |--------------------------------------------------------------------------
     */
-    Route::prefix('habillages-sonores')->name('habillages-sonores.')->group(function () {
-        Route::get('/', [HabillageSonoreController::class, 'listeTous'])->name('tous');
-        Route::get('/creations', [HabillageSonoreController::class, 'listeCreations'])->name('creations');
-        Route::get('/validations', [HabillageSonoreController::class, 'listeValidations'])->name('validations');
-        Route::get('/livres', [HabillageSonoreController::class, 'listeLivres'])->name('livres');
+        Route::prefix('habillages-sonores')->name('habillages-sonores.')->group(function () {
+            Route::get('/', [HabillageSonoreController::class, 'listeTous'])->name('tous');
+            Route::get('/creations', [HabillageSonoreController::class, 'listeCreations'])->name('creations');
+            Route::get('/validations', [HabillageSonoreController::class, 'listeValidations'])->name('validations');
+            Route::get('/livres', [HabillageSonoreController::class, 'listeLivres'])->name('livres');
 
-        Route::get('/creer', [HabillageSonoreController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [HabillageSonoreController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/creer', [HabillageSonoreController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [HabillageSonoreController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{habillageSonore}', [HabillageSonoreController::class, 'details'])->name('details');
-        Route::get('/{habillageSonore}/modifier', [HabillageSonoreController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{habillageSonore}/update', [HabillageSonoreController::class, 'mettreAJour'])->name('update');
+            Route::get('/{habillageSonore}', [HabillageSonoreController::class, 'details'])->name('details');
+            Route::get('/{habillageSonore}/modifier', [HabillageSonoreController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{habillageSonore}/update', [HabillageSonoreController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{habillageSonore}/valider', [HabillageSonoreController::class, 'valider'])->name('valider');
-        Route::patch('/{habillageSonore}/livrer', [HabillageSonoreController::class, 'livrer'])->name('livrer');
+            Route::patch('/{habillageSonore}/valider', [HabillageSonoreController::class, 'valider'])->name('valider');
+            Route::patch('/{habillageSonore}/livrer', [HabillageSonoreController::class, 'livrer'])->name('livrer');
 
-        Route::delete('/{habillageSonore}/delete', [HabillageSonoreController::class, 'supprimer'])->name('delete');
+            Route::delete('/{habillageSonore}/delete', [HabillageSonoreController::class, 'supprimer'])->name('delete');
+        });
     });
 
-});
 
+    //----------------graphisme----------------------------
 
-//----------------graphisme----------------------------
+    Route::prefix('chambre-graphisme')->name('chambre-graphisme.')->group(function () {
 
-Route::prefix('chambre-graphisme')->name('chambre-graphisme.')->group(function () {
+        Route::get('/dashboard', [GraphismeDashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/dashboard', [GraphismeDashboardController::class, 'index'])->name('dashboard');
+        Route::prefix('creations')->name('creations.')->group(function () {
+            Route::get('/', [CreationGraphiqueController::class, 'listeToutes'])->name('toutes');
+            Route::get('/brouillons', [CreationGraphiqueController::class, 'listeBrouillons'])->name('brouillons');
+            Route::get('/en-cours', [CreationGraphiqueController::class, 'listeEnCours'])->name('en_cours');
+            Route::get('/validations', [CreationGraphiqueController::class, 'listeValidations'])->name('validations');
+            Route::get('/livrees', [CreationGraphiqueController::class, 'listeLivrees'])->name('livrees');
+            Route::get('/creer', [CreationGraphiqueController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [CreationGraphiqueController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/{creationGraphique}', [CreationGraphiqueController::class, 'details'])->name('details');
+            Route::get('/{creationGraphique}/modifier', [CreationGraphiqueController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{creationGraphique}/update', [CreationGraphiqueController::class, 'mettreAJour'])->name('update');
+            Route::patch('/{creationGraphique}/envoyer-en-validation', [CreationGraphiqueController::class, 'envoyerEnValidation'])->name('envoyer_en_validation');
+            Route::patch('/{creationGraphique}/livrer', [CreationGraphiqueController::class, 'livrer'])->name('livrer');
+            Route::patch('/{creationGraphique}/archiver', [CreationGraphiqueController::class, 'archiver'])->name('archiver');
+            Route::delete('/{creationGraphique}/delete', [CreationGraphiqueController::class, 'supprimer'])->name('delete');
+        });
 
-    Route::prefix('creations')->name('creations.')->group(function () {
-        Route::get('/', [CreationGraphiqueController::class, 'listeToutes'])->name('toutes');
-        Route::get('/brouillons', [CreationGraphiqueController::class, 'listeBrouillons'])->name('brouillons');
-        Route::get('/en-cours', [CreationGraphiqueController::class, 'listeEnCours'])->name('en_cours');
-        Route::get('/validations', [CreationGraphiqueController::class, 'listeValidations'])->name('validations');
-        Route::get('/livrees', [CreationGraphiqueController::class, 'listeLivrees'])->name('livrees');
-        Route::get('/creer', [CreationGraphiqueController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [CreationGraphiqueController::class, 'enregistrer'])->name('enregistrer');
-        Route::get('/{creationGraphique}', [CreationGraphiqueController::class, 'details'])->name('details');
-        Route::get('/{creationGraphique}/modifier', [CreationGraphiqueController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{creationGraphique}/update', [CreationGraphiqueController::class, 'mettreAJour'])->name('update');
-        Route::patch('/{creationGraphique}/envoyer-en-validation', [CreationGraphiqueController::class, 'envoyerEnValidation'])->name('envoyer_en_validation');
-        Route::patch('/{creationGraphique}/livrer', [CreationGraphiqueController::class, 'livrer'])->name('livrer');
-        Route::patch('/{creationGraphique}/archiver', [CreationGraphiqueController::class, 'archiver'])->name('archiver');
-        Route::delete('/{creationGraphique}/delete', [CreationGraphiqueController::class, 'supprimer'])->name('delete');
+        Route::prefix('identites')->name('identites.')->group(function () {
+            Route::get('/', [IdentiteVisuelleController::class, 'listeToutes'])->name('toutes');
+            Route::get('/creations', [IdentiteVisuelleController::class, 'listeCreations'])->name('creations');
+            Route::get('/validations', [IdentiteVisuelleController::class, 'listeValidations'])->name('validations');
+            Route::get('/terminees', [IdentiteVisuelleController::class, 'listeTerminees'])->name('terminees');
+            Route::get('/creer', [IdentiteVisuelleController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [IdentiteVisuelleController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/{identiteVisuelle}', [IdentiteVisuelleController::class, 'details'])->name('details');
+            Route::get('/{identiteVisuelle}/modifier', [IdentiteVisuelleController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{identiteVisuelle}/update', [IdentiteVisuelleController::class, 'mettreAJour'])->name('update');
+            Route::patch('/{identiteVisuelle}/valider', [IdentiteVisuelleController::class, 'valider'])->name('valider');
+            Route::patch('/{identiteVisuelle}/terminer', [IdentiteVisuelleController::class, 'terminer'])->name('terminer');
+            Route::delete('/{identiteVisuelle}/delete', [IdentiteVisuelleController::class, 'supprimer'])->name('delete');
+        });
+
+        Route::prefix('affiches')->name('affiches.')->group(function () {
+            Route::get('/', [AfficheFlyerController::class, 'listeToutes'])->name('toutes');
+            Route::get('/affiches', [AfficheFlyerController::class, 'listeAffiches'])->name('affiches');
+            Route::get('/flyers', [AfficheFlyerController::class, 'listeFlyers'])->name('flyers');
+            Route::get('/livres', [AfficheFlyerController::class, 'listeLivres'])->name('livres');
+            Route::get('/creer', [AfficheFlyerController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [AfficheFlyerController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/{afficheFlyer}', [AfficheFlyerController::class, 'details'])->name('details');
+            Route::get('/{afficheFlyer}/modifier', [AfficheFlyerController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{afficheFlyer}/update', [AfficheFlyerController::class, 'mettreAJour'])->name('update');
+            Route::patch('/{afficheFlyer}/livrer', [AfficheFlyerController::class, 'livrer'])->name('livrer');
+            Route::delete('/{afficheFlyer}/delete', [AfficheFlyerController::class, 'supprimer'])->name('delete');
+        });
+
+        Route::prefix('social')->name('social.')->group(function () {
+            Route::get('/', [VisuelReseauSocialController::class, 'listeToutes'])->name('toutes');
+            Route::get('/programmes', [VisuelReseauSocialController::class, 'listeProgrammes'])->name('programmes');
+            Route::get('/publies', [VisuelReseauSocialController::class, 'listePublies'])->name('publies');
+            Route::get('/instagram', [VisuelReseauSocialController::class, 'listeInstagram'])->name('instagram');
+            Route::get('/creer', [VisuelReseauSocialController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [VisuelReseauSocialController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/{visuelReseauSocial}', [VisuelReseauSocialController::class, 'details'])->name('details');
+            Route::get('/{visuelReseauSocial}/modifier', [VisuelReseauSocialController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{visuelReseauSocial}/update', [VisuelReseauSocialController::class, 'mettreAJour'])->name('update');
+            Route::patch('/{visuelReseauSocial}/publier', [VisuelReseauSocialController::class, 'publier'])->name('publier');
+            Route::delete('/{visuelReseauSocial}/delete', [VisuelReseauSocialController::class, 'supprimer'])->name('delete');
+        });
+
+        Route::prefix('uiux')->name('uiux.')->group(function () {
+            Route::get('/', [UiuxDesignController::class, 'listeToutes'])->name('toutes');
+            Route::get('/wireframes', [UiuxDesignController::class, 'listeWireframes'])->name('wireframes');
+            Route::get('/maquettes', [UiuxDesignController::class, 'listeMaquettes'])->name('maquettes');
+            Route::get('/prototypes', [UiuxDesignController::class, 'listePrototypes'])->name('prototypes');
+            Route::get('/creer', [UiuxDesignController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [UiuxDesignController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/{uiuxDesign}', [UiuxDesignController::class, 'details'])->name('details');
+            Route::get('/{uiuxDesign}/modifier', [UiuxDesignController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{uiuxDesign}/update', [UiuxDesignController::class, 'mettreAJour'])->name('update');
+            Route::patch('/{uiuxDesign}/valider', [UiuxDesignController::class, 'valider'])->name('valider');
+            Route::delete('/{uiuxDesign}/delete', [UiuxDesignController::class, 'supprimer'])->name('delete');
+        });
+
+        Route::prefix('maquettes')->name('maquettes.')->group(function () {
+            Route::get('/', [MaquetteGraphiqueController::class, 'listeToutes'])->name('toutes');
+            Route::get('/creations', [MaquetteGraphiqueController::class, 'listeCreations'])->name('creations');
+            Route::get('/validations', [MaquetteGraphiqueController::class, 'listeValidations'])->name('validations');
+            Route::get('/livrees', [MaquetteGraphiqueController::class, 'listeLivrees'])->name('livrees');
+            Route::get('/creer', [MaquetteGraphiqueController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [MaquetteGraphiqueController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/{maquetteGraphique}', [MaquetteGraphiqueController::class, 'details'])->name('details');
+            Route::get('/{maquetteGraphique}/modifier', [MaquetteGraphiqueController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{maquetteGraphique}/update', [MaquetteGraphiqueController::class, 'mettreAJour'])->name('update');
+            Route::patch('/{maquetteGraphique}/valider', [MaquetteGraphiqueController::class, 'valider'])->name('valider');
+            Route::patch('/{maquetteGraphique}/livrer', [MaquetteGraphiqueController::class, 'livrer'])->name('livrer');
+            Route::delete('/{maquetteGraphique}/delete', [MaquetteGraphiqueController::class, 'supprimer'])->name('delete');
+        });
+
+        Route::prefix('clients-demandes')->name('clients-demandes.')->group(function () {
+            Route::get('/', [DemandeClientGraphismeController::class, 'listeToutes'])->name('toutes');
+            Route::get('/en-attente', [DemandeClientGraphismeController::class, 'listeEnAttente'])->name('en_attente');
+            Route::get('/en-cours', [DemandeClientGraphismeController::class, 'listeEnCours'])->name('en_cours');
+            Route::get('/terminees', [DemandeClientGraphismeController::class, 'listeTerminees'])->name('terminees');
+            Route::get('/creer', [DemandeClientGraphismeController::class, 'formulaireCreation'])->name('creer');
+            Route::post('/enregistrer', [DemandeClientGraphismeController::class, 'enregistrer'])->name('enregistrer');
+            Route::get('/{demandeClientGraphisme}', [DemandeClientGraphismeController::class, 'details'])->name('details');
+            Route::get('/{demandeClientGraphisme}/modifier', [DemandeClientGraphismeController::class, 'formulaireEdition'])->name('modifier');
+            Route::put('/{demandeClientGraphisme}/update', [DemandeClientGraphismeController::class, 'mettreAJour'])->name('update');
+            Route::patch('/{demandeClientGraphisme}/lancer', [DemandeClientGraphismeController::class, 'lancer'])->name('lancer');
+            Route::patch('/{demandeClientGraphisme}/terminer', [DemandeClientGraphismeController::class, 'terminer'])->name('terminer');
+            Route::delete('/{demandeClientGraphisme}/delete', [DemandeClientGraphismeController::class, 'supprimer'])->name('delete');
+        });
     });
 
-    Route::prefix('identites')->name('identites.')->group(function () {
-        Route::get('/', [IdentiteVisuelleController::class, 'listeToutes'])->name('toutes');
-        Route::get('/creations', [IdentiteVisuelleController::class, 'listeCreations'])->name('creations');
-        Route::get('/validations', [IdentiteVisuelleController::class, 'listeValidations'])->name('validations');
-        Route::get('/terminees', [IdentiteVisuelleController::class, 'listeTerminees'])->name('terminees');
-        Route::get('/creer', [IdentiteVisuelleController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [IdentiteVisuelleController::class, 'enregistrer'])->name('enregistrer');
-        Route::get('/{identiteVisuelle}', [IdentiteVisuelleController::class, 'details'])->name('details');
-        Route::get('/{identiteVisuelle}/modifier', [IdentiteVisuelleController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{identiteVisuelle}/update', [IdentiteVisuelleController::class, 'mettreAJour'])->name('update');
-        Route::patch('/{identiteVisuelle}/valider', [IdentiteVisuelleController::class, 'valider'])->name('valider');
-        Route::patch('/{identiteVisuelle}/terminer', [IdentiteVisuelleController::class, 'terminer'])->name('terminer');
-        Route::delete('/{identiteVisuelle}/delete', [IdentiteVisuelleController::class, 'supprimer'])->name('delete');
-    });
-
-    Route::prefix('affiches')->name('affiches.')->group(function () {
-        Route::get('/', [AfficheFlyerController::class, 'listeToutes'])->name('toutes');
-        Route::get('/affiches', [AfficheFlyerController::class, 'listeAffiches'])->name('affiches');
-        Route::get('/flyers', [AfficheFlyerController::class, 'listeFlyers'])->name('flyers');
-        Route::get('/livres', [AfficheFlyerController::class, 'listeLivres'])->name('livres');
-        Route::get('/creer', [AfficheFlyerController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [AfficheFlyerController::class, 'enregistrer'])->name('enregistrer');
-        Route::get('/{afficheFlyer}', [AfficheFlyerController::class, 'details'])->name('details');
-        Route::get('/{afficheFlyer}/modifier', [AfficheFlyerController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{afficheFlyer}/update', [AfficheFlyerController::class, 'mettreAJour'])->name('update');
-        Route::patch('/{afficheFlyer}/livrer', [AfficheFlyerController::class, 'livrer'])->name('livrer');
-        Route::delete('/{afficheFlyer}/delete', [AfficheFlyerController::class, 'supprimer'])->name('delete');
-    });
-
-    Route::prefix('social')->name('social.')->group(function () {
-        Route::get('/', [VisuelReseauSocialController::class, 'listeToutes'])->name('toutes');
-        Route::get('/programmes', [VisuelReseauSocialController::class, 'listeProgrammes'])->name('programmes');
-        Route::get('/publies', [VisuelReseauSocialController::class, 'listePublies'])->name('publies');
-        Route::get('/instagram', [VisuelReseauSocialController::class, 'listeInstagram'])->name('instagram');
-        Route::get('/creer', [VisuelReseauSocialController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [VisuelReseauSocialController::class, 'enregistrer'])->name('enregistrer');
-        Route::get('/{visuelReseauSocial}', [VisuelReseauSocialController::class, 'details'])->name('details');
-        Route::get('/{visuelReseauSocial}/modifier', [VisuelReseauSocialController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{visuelReseauSocial}/update', [VisuelReseauSocialController::class, 'mettreAJour'])->name('update');
-        Route::patch('/{visuelReseauSocial}/publier', [VisuelReseauSocialController::class, 'publier'])->name('publier');
-        Route::delete('/{visuelReseauSocial}/delete', [VisuelReseauSocialController::class, 'supprimer'])->name('delete');
-    });
-
-    Route::prefix('uiux')->name('uiux.')->group(function () {
-        Route::get('/', [UiuxDesignController::class, 'listeToutes'])->name('toutes');
-        Route::get('/wireframes', [UiuxDesignController::class, 'listeWireframes'])->name('wireframes');
-        Route::get('/maquettes', [UiuxDesignController::class, 'listeMaquettes'])->name('maquettes');
-        Route::get('/prototypes', [UiuxDesignController::class, 'listePrototypes'])->name('prototypes');
-        Route::get('/creer', [UiuxDesignController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [UiuxDesignController::class, 'enregistrer'])->name('enregistrer');
-        Route::get('/{uiuxDesign}', [UiuxDesignController::class, 'details'])->name('details');
-        Route::get('/{uiuxDesign}/modifier', [UiuxDesignController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{uiuxDesign}/update', [UiuxDesignController::class, 'mettreAJour'])->name('update');
-        Route::patch('/{uiuxDesign}/valider', [UiuxDesignController::class, 'valider'])->name('valider');
-        Route::delete('/{uiuxDesign}/delete', [UiuxDesignController::class, 'supprimer'])->name('delete');
-    });
-
-    Route::prefix('maquettes')->name('maquettes.')->group(function () {
-        Route::get('/', [MaquetteGraphiqueController::class, 'listeToutes'])->name('toutes');
-        Route::get('/creations', [MaquetteGraphiqueController::class, 'listeCreations'])->name('creations');
-        Route::get('/validations', [MaquetteGraphiqueController::class, 'listeValidations'])->name('validations');
-        Route::get('/livrees', [MaquetteGraphiqueController::class, 'listeLivrees'])->name('livrees');
-        Route::get('/creer', [MaquetteGraphiqueController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [MaquetteGraphiqueController::class, 'enregistrer'])->name('enregistrer');
-        Route::get('/{maquetteGraphique}', [MaquetteGraphiqueController::class, 'details'])->name('details');
-        Route::get('/{maquetteGraphique}/modifier', [MaquetteGraphiqueController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{maquetteGraphique}/update', [MaquetteGraphiqueController::class, 'mettreAJour'])->name('update');
-        Route::patch('/{maquetteGraphique}/valider', [MaquetteGraphiqueController::class, 'valider'])->name('valider');
-        Route::patch('/{maquetteGraphique}/livrer', [MaquetteGraphiqueController::class, 'livrer'])->name('livrer');
-        Route::delete('/{maquetteGraphique}/delete', [MaquetteGraphiqueController::class, 'supprimer'])->name('delete');
-    });
-
-    Route::prefix('clients-demandes')->name('clients-demandes.')->group(function () {
-        Route::get('/', [DemandeClientGraphismeController::class, 'listeToutes'])->name('toutes');
-        Route::get('/en-attente', [DemandeClientGraphismeController::class, 'listeEnAttente'])->name('en_attente');
-        Route::get('/en-cours', [DemandeClientGraphismeController::class, 'listeEnCours'])->name('en_cours');
-        Route::get('/terminees', [DemandeClientGraphismeController::class, 'listeTerminees'])->name('terminees');
-        Route::get('/creer', [DemandeClientGraphismeController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [DemandeClientGraphismeController::class, 'enregistrer'])->name('enregistrer');
-        Route::get('/{demandeClientGraphisme}', [DemandeClientGraphismeController::class, 'details'])->name('details');
-        Route::get('/{demandeClientGraphisme}/modifier', [DemandeClientGraphismeController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{demandeClientGraphisme}/update', [DemandeClientGraphismeController::class, 'mettreAJour'])->name('update');
-        Route::patch('/{demandeClientGraphisme}/lancer', [DemandeClientGraphismeController::class, 'lancer'])->name('lancer');
-        Route::patch('/{demandeClientGraphisme}/terminer', [DemandeClientGraphismeController::class, 'terminer'])->name('terminer');
-        Route::delete('/{demandeClientGraphisme}/delete', [DemandeClientGraphismeController::class, 'supprimer'])->name('delete');
-    });
-
-});
 
 
-
-//----------------JURIDICTIONS----------------------------
+    //----------------JURIDICTIONS----------------------------
 
 
 
 
-Route::prefix('chambre-juridique')->name('chambre-juridique.')->group(function () {
-    /*
-    |--------------------------------------------------------------------------
-    | DASHBOARD JURIDIQUE
-    |--------------------------------------------------------------------------
-    */
-    Route::get('/dashboard', [JuridiqueDashboardController::class, 'index'])->name('dashboard');
+    // Route::prefix('chambre-juridique')->name('chambre-juridique.')->group(function () {
+    //     /*
+    //     |--------------------------------------------------------------------------
+    //     | DASHBOARD JURIDIQUE
+    //     |--------------------------------------------------------------------------
+    //     */
+    //     Route::get('/dashboard', [JuridiqueDashboardController::class, 'index'])->name('dashboard');
 
-    /*
-    |--------------------------------------------------------------------------
-    | CONTRATS JURIDIQUES
-    |--------------------------------------------------------------------------
-    */
-    Route::prefix('contrats')->name('contrats.')->group(function () {
-        Route::get('/', [ContratJuridiqueController::class, 'listeToutes'])->name('toutes');
-        Route::get('/brouillons', [ContratJuridiqueController::class, 'listeBrouillons'])->name('brouillons');
-        Route::get('/valides', [ContratJuridiqueController::class, 'listeValides'])->name('valides');
-        Route::get('/signes', [ContratJuridiqueController::class, 'listeSignes'])->name('signes');
-        Route::get('/archives', [ContratJuridiqueController::class, 'listeArchives'])->name('archives');
+    //     /*
+    //     |--------------------------------------------------------------------------
+    //     | CONTRATS JURIDIQUES
+    //     |--------------------------------------------------------------------------
+    //     */
+    //     Route::prefix('contrats')->name('contrats.')->group(function () {
+    //         Route::get('/', [ContratJuridiqueController::class, 'listeToutes'])->name('toutes');
+    //         Route::get('/brouillons', [ContratJuridiqueController::class, 'listeBrouillons'])->name('brouillons');
+    //         Route::get('/valides', [ContratJuridiqueController::class, 'listeValides'])->name('valides');
+    //         Route::get('/signes', [ContratJuridiqueController::class, 'listeSignes'])->name('signes');
+    //         Route::get('/archives', [ContratJuridiqueController::class, 'listeArchives'])->name('archives');
 
-        Route::get('/creer', [ContratJuridiqueController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [ContratJuridiqueController::class, 'enregistrer'])->name('enregistrer');
+    //         Route::get('/creer', [ContratJuridiqueController::class, 'formulaireCreation'])->name('creer');
+    //         Route::post('/enregistrer', [ContratJuridiqueController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{contratJuridique}', [ContratJuridiqueController::class, 'details'])->name('details');
-        Route::get('/{contratJuridique}/modifier', [ContratJuridiqueController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{contratJuridique}/update', [ContratJuridiqueController::class, 'mettreAJour'])->name('update');
+    //         Route::get('/{contratJuridique}', [ContratJuridiqueController::class, 'details'])->name('details');
+    //         Route::get('/{contratJuridique}/modifier', [ContratJuridiqueController::class, 'formulaireEdition'])->name('modifier');
+    //         Route::put('/{contratJuridique}/update', [ContratJuridiqueController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{contratJuridique}/valider', [ContratJuridiqueController::class, 'valider'])->name('valider');
-        Route::patch('/{contratJuridique}/signer', [ContratJuridiqueController::class, 'signer'])->name('signer');
-        Route::patch('/{contratJuridique}/archiver', [ContratJuridiqueController::class, 'archiver'])->name('archiver');
+    //         Route::patch('/{contratJuridique}/valider', [ContratJuridiqueController::class, 'valider'])->name('valider');
+    //         Route::patch('/{contratJuridique}/signer', [ContratJuridiqueController::class, 'signer'])->name('signer');
+    //         Route::patch('/{contratJuridique}/archiver', [ContratJuridiqueController::class, 'archiver'])->name('archiver');
 
-        Route::delete('/{contratJuridique}/delete', [ContratJuridiqueController::class, 'supprimer'])->name('delete');
-    });
+    //         Route::delete('/{contratJuridique}/delete', [ContratJuridiqueController::class, 'supprimer'])->name('delete');
+    //     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | ENGAGEMENTS JURIDIQUES
-    |--------------------------------------------------------------------------
-    */
-    Route::prefix('engagements')->name('engagements.')->group(function () {
-        Route::get('/', [EngagementJuridiqueController::class, 'listeToutes'])->name('toutes');
-        Route::get('/en-attente', [EngagementJuridiqueController::class, 'listeEnAttente'])->name('en_attente');
-        Route::get('/valides', [EngagementJuridiqueController::class, 'listeValides'])->name('valides');
-        Route::get('/rejetes', [EngagementJuridiqueController::class, 'listeRejetes'])->name('rejetes');
+    //     /*
+    //     |--------------------------------------------------------------------------
+    //     | ENGAGEMENTS JURIDIQUES
+    //     |--------------------------------------------------------------------------
+    //     */
+    //     Route::prefix('engagements')->name('engagements.')->group(function () {
+    //         Route::get('/', [EngagementJuridiqueController::class, 'listeToutes'])->name('toutes');
+    //         Route::get('/en-attente', [EngagementJuridiqueController::class, 'listeEnAttente'])->name('en_attente');
+    //         Route::get('/valides', [EngagementJuridiqueController::class, 'listeValides'])->name('valides');
+    //         Route::get('/rejetes', [EngagementJuridiqueController::class, 'listeRejetes'])->name('rejetes');
 
-        Route::get('/creer', [EngagementJuridiqueController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [EngagementJuridiqueController::class, 'enregistrer'])->name('enregistrer');
+    //         Route::get('/creer', [EngagementJuridiqueController::class, 'formulaireCreation'])->name('creer');
+    //         Route::post('/enregistrer', [EngagementJuridiqueController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{engagementJuridique}', [EngagementJuridiqueController::class, 'details'])->name('details');
-        Route::get('/{engagementJuridique}/modifier', [EngagementJuridiqueController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{engagementJuridique}/update', [EngagementJuridiqueController::class, 'mettreAJour'])->name('update');
+    //         Route::get('/{engagementJuridique}', [EngagementJuridiqueController::class, 'details'])->name('details');
+    //         Route::get('/{engagementJuridique}/modifier', [EngagementJuridiqueController::class, 'formulaireEdition'])->name('modifier');
+    //         Route::put('/{engagementJuridique}/update', [EngagementJuridiqueController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{engagementJuridique}/valider', [EngagementJuridiqueController::class, 'valider'])->name('valider');
-        Route::patch('/{engagementJuridique}/rejeter', [EngagementJuridiqueController::class, 'rejeter'])->name('rejeter');
-        Route::patch('/{engagementJuridique}/archiver', [EngagementJuridiqueController::class, 'archiver'])->name('archiver');
+    //         Route::patch('/{engagementJuridique}/valider', [EngagementJuridiqueController::class, 'valider'])->name('valider');
+    //         Route::patch('/{engagementJuridique}/rejeter', [EngagementJuridiqueController::class, 'rejeter'])->name('rejeter');
+    //         Route::patch('/{engagementJuridique}/archiver', [EngagementJuridiqueController::class, 'archiver'])->name('archiver');
 
-        Route::delete('/{engagementJuridique}/delete', [EngagementJuridiqueController::class, 'supprimer'])->name('delete');
-    });
+    //         Route::delete('/{engagementJuridique}/delete', [EngagementJuridiqueController::class, 'supprimer'])->name('delete');
+    //     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | MODELES DE DOCUMENTS JURIDIQUES
-    |--------------------------------------------------------------------------
-    */
-    Route::prefix('modeles-documents')->name('modeles-documents.')->group(function () {
-        Route::get('/', [ModeleDocumentJuridiqueController::class, 'listeToutes'])->name('toutes');
-        Route::get('/actifs', [ModeleDocumentJuridiqueController::class, 'listeActifs'])->name('actifs');
-        Route::get('/inactifs', [ModeleDocumentJuridiqueController::class, 'listeInactifs'])->name('inactifs');
+    //     /*
+    //     |--------------------------------------------------------------------------
+    //     | MODELES DE DOCUMENTS JURIDIQUES
+    //     |--------------------------------------------------------------------------
+    //     */
+    //     Route::prefix('modeles-documents')->name('modeles-documents.')->group(function () {
+    //         Route::get('/', [ModeleDocumentJuridiqueController::class, 'listeToutes'])->name('toutes');
+    //         Route::get('/actifs', [ModeleDocumentJuridiqueController::class, 'listeActifs'])->name('actifs');
+    //         Route::get('/inactifs', [ModeleDocumentJuridiqueController::class, 'listeInactifs'])->name('inactifs');
 
-        Route::get('/creer', [ModeleDocumentJuridiqueController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [ModeleDocumentJuridiqueController::class, 'enregistrer'])->name('enregistrer');
+    //         Route::get('/creer', [ModeleDocumentJuridiqueController::class, 'formulaireCreation'])->name('creer');
+    //         Route::post('/enregistrer', [ModeleDocumentJuridiqueController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{modeleDocumentJuridique}', [ModeleDocumentJuridiqueController::class, 'details'])->name('details');
-        Route::get('/{modeleDocumentJuridique}/modifier', [ModeleDocumentJuridiqueController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{modeleDocumentJuridique}/update', [ModeleDocumentJuridiqueController::class, 'mettreAJour'])->name('update');
+    //         Route::get('/{modeleDocumentJuridique}', [ModeleDocumentJuridiqueController::class, 'details'])->name('details');
+    //         Route::get('/{modeleDocumentJuridique}/modifier', [ModeleDocumentJuridiqueController::class, 'formulaireEdition'])->name('modifier');
+    //         Route::put('/{modeleDocumentJuridique}/update', [ModeleDocumentJuridiqueController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{modeleDocumentJuridique}/activer', [ModeleDocumentJuridiqueController::class, 'activer'])->name('activer');
-        Route::patch('/{modeleDocumentJuridique}/desactiver', [ModeleDocumentJuridiqueController::class, 'desactiver'])->name('desactiver');
+    //         Route::patch('/{modeleDocumentJuridique}/activer', [ModeleDocumentJuridiqueController::class, 'activer'])->name('activer');
+    //         Route::patch('/{modeleDocumentJuridique}/desactiver', [ModeleDocumentJuridiqueController::class, 'desactiver'])->name('desactiver');
 
-        Route::delete('/{modeleDocumentJuridique}/delete', [ModeleDocumentJuridiqueController::class, 'supprimer'])->name('delete');
-    });
+    //         Route::delete('/{modeleDocumentJuridique}/delete', [ModeleDocumentJuridiqueController::class, 'supprimer'])->name('delete');
+    //     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | DOCUMENTS JURIDIQUES
-    |--------------------------------------------------------------------------
-    */
-    Route::prefix('documents')->name('documents.')->group(function () {
-        Route::get('/', [DocumentJuridiqueController::class, 'listeToutes'])->name('toutes');
-        Route::get('/actifs', [DocumentJuridiqueController::class, 'listeActifs'])->name('actifs');
-        Route::get('/archives', [DocumentJuridiqueController::class, 'listeArchives'])->name('archives');
+    //     /*
+    //     |--------------------------------------------------------------------------
+    //     | DOCUMENTS JURIDIQUES
+    //     |--------------------------------------------------------------------------
+    //     */
+    //     Route::prefix('documents')->name('documents.')->group(function () {
+    //         Route::get('/', [DocumentJuridiqueController::class, 'listeToutes'])->name('toutes');
+    //         Route::get('/actifs', [DocumentJuridiqueController::class, 'listeActifs'])->name('actifs');
+    //         Route::get('/archives', [DocumentJuridiqueController::class, 'listeArchives'])->name('archives');
 
-        Route::get('/creer', [DocumentJuridiqueController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [DocumentJuridiqueController::class, 'enregistrer'])->name('enregistrer');
+    //         Route::get('/creer', [DocumentJuridiqueController::class, 'formulaireCreation'])->name('creer');
+    //         Route::post('/enregistrer', [DocumentJuridiqueController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{documentJuridique}', [DocumentJuridiqueController::class, 'details'])->name('details');
-        Route::get('/{documentJuridique}/modifier', [DocumentJuridiqueController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{documentJuridique}/update', [DocumentJuridiqueController::class, 'mettreAJour'])->name('update');
+    //         Route::get('/{documentJuridique}', [DocumentJuridiqueController::class, 'details'])->name('details');
+    //         Route::get('/{documentJuridique}/modifier', [DocumentJuridiqueController::class, 'formulaireEdition'])->name('modifier');
+    //         Route::put('/{documentJuridique}/update', [DocumentJuridiqueController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{documentJuridique}/activer', [DocumentJuridiqueController::class, 'activer'])->name('activer');
-        Route::patch('/{documentJuridique}/archiver', [DocumentJuridiqueController::class, 'archiver'])->name('archiver');
+    //         Route::patch('/{documentJuridique}/activer', [DocumentJuridiqueController::class, 'activer'])->name('activer');
+    //         Route::patch('/{documentJuridique}/archiver', [DocumentJuridiqueController::class, 'archiver'])->name('archiver');
 
-        Route::delete('/{documentJuridique}/delete', [DocumentJuridiqueController::class, 'supprimer'])->name('delete');
-    });
+    //         Route::delete('/{documentJuridique}/delete', [DocumentJuridiqueController::class, 'supprimer'])->name('delete');
+    //     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | DOSSIERS JURIDIQUES
-    |--------------------------------------------------------------------------
-    */
-    Route::prefix('dossiers')->name('dossiers.')->group(function () {
-        Route::get('/', [DossierJuridiqueController::class, 'listeToutes'])->name('toutes');
-        Route::get('/ouverts', [DossierJuridiqueController::class, 'listeOuverts'])->name('ouverts');
-        Route::get('/en-cours', [DossierJuridiqueController::class, 'listeEnCours'])->name('en_cours');
-        Route::get('/fermes', [DossierJuridiqueController::class, 'listeFermes'])->name('fermes');
+    //     /*
+    //     |--------------------------------------------------------------------------
+    //     | DOSSIERS JURIDIQUES
+    //     |--------------------------------------------------------------------------
+    //     */
+    //     Route::prefix('dossiers')->name('dossiers.')->group(function () {
+    //         Route::get('/', [DossierJuridiqueController::class, 'listeToutes'])->name('toutes');
+    //         Route::get('/ouverts', [DossierJuridiqueController::class, 'listeOuverts'])->name('ouverts');
+    //         Route::get('/en-cours', [DossierJuridiqueController::class, 'listeEnCours'])->name('en_cours');
+    //         Route::get('/fermes', [DossierJuridiqueController::class, 'listeFermes'])->name('fermes');
 
-        Route::get('/creer', [DossierJuridiqueController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [DossierJuridiqueController::class, 'enregistrer'])->name('enregistrer');
+    //         Route::get('/creer', [DossierJuridiqueController::class, 'formulaireCreation'])->name('creer');
+    //         Route::post('/enregistrer', [DossierJuridiqueController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{dossierJuridique}', [DossierJuridiqueController::class, 'details'])->name('details');
-        Route::get('/{dossierJuridique}/modifier', [DossierJuridiqueController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{dossierJuridique}/update', [DossierJuridiqueController::class, 'mettreAJour'])->name('update');
+    //         Route::get('/{dossierJuridique}', [DossierJuridiqueController::class, 'details'])->name('details');
+    //         Route::get('/{dossierJuridique}/modifier', [DossierJuridiqueController::class, 'formulaireEdition'])->name('modifier');
+    //         Route::put('/{dossierJuridique}/update', [DossierJuridiqueController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{dossierJuridique}/ouvrir', [DossierJuridiqueController::class, 'ouvrir'])->name('ouvrir');
-        Route::patch('/{dossierJuridique}/lancer', [DossierJuridiqueController::class, 'lancer'])->name('lancer');
-        Route::patch('/{dossierJuridique}/fermer', [DossierJuridiqueController::class, 'fermer'])->name('fermer');
-        Route::patch('/{dossierJuridique}/archiver', [DossierJuridiqueController::class, 'archiver'])->name('archiver');
+    //         Route::patch('/{dossierJuridique}/ouvrir', [DossierJuridiqueController::class, 'ouvrir'])->name('ouvrir');
+    //         Route::patch('/{dossierJuridique}/lancer', [DossierJuridiqueController::class, 'lancer'])->name('lancer');
+    //         Route::patch('/{dossierJuridique}/fermer', [DossierJuridiqueController::class, 'fermer'])->name('fermer');
+    //         Route::patch('/{dossierJuridique}/archiver', [DossierJuridiqueController::class, 'archiver'])->name('archiver');
 
-        Route::delete('/{dossierJuridique}/delete', [DossierJuridiqueController::class, 'supprimer'])->name('delete');
-    });
+    //         Route::delete('/{dossierJuridique}/delete', [DossierJuridiqueController::class, 'supprimer'])->name('delete');
+    //     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | ARCHIVES DU HUB
-    |--------------------------------------------------------------------------
-    */
-    Route::prefix('archives-hub')->name('archives-hub.')->group(function () {
-        Route::get('/', [ArchiveHubController::class, 'listeToutes'])->name('toutes');
-        Route::get('/fondations', [ArchiveHubController::class, 'listeFondations'])->name('fondations');
-        Route::get('/inaugurations', [ArchiveHubController::class, 'listeInaugurations'])->name('inaugurations');
-        Route::get('/medias', [ArchiveHubController::class, 'listeMedias'])->name('medias');
+    //     /*
+    //     |--------------------------------------------------------------------------
+    //     | ARCHIVES DU HUB
+    //     |--------------------------------------------------------------------------
+    //     */
+    //     Route::prefix('archives-hub')->name('archives-hub.')->group(function () {
+    //         Route::get('/', [ArchiveHubController::class, 'listeToutes'])->name('toutes');
+    //         Route::get('/fondations', [ArchiveHubController::class, 'listeFondations'])->name('fondations');
+    //         Route::get('/inaugurations', [ArchiveHubController::class, 'listeInaugurations'])->name('inaugurations');
+    //         Route::get('/medias', [ArchiveHubController::class, 'listeMedias'])->name('medias');
 
-        Route::get('/creer', [ArchiveHubController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [ArchiveHubController::class, 'enregistrer'])->name('enregistrer');
+    //         Route::get('/creer', [ArchiveHubController::class, 'formulaireCreation'])->name('creer');
+    //         Route::post('/enregistrer', [ArchiveHubController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{archiveHub}', [ArchiveHubController::class, 'details'])->name('details');
-        Route::get('/{archiveHub}/modifier', [ArchiveHubController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{archiveHub}/update', [ArchiveHubController::class, 'mettreAJour'])->name('update');
+    //         Route::get('/{archiveHub}', [ArchiveHubController::class, 'details'])->name('details');
+    //         Route::get('/{archiveHub}/modifier', [ArchiveHubController::class, 'formulaireEdition'])->name('modifier');
+    //         Route::put('/{archiveHub}/update', [ArchiveHubController::class, 'mettreAJour'])->name('update');
 
-        Route::patch('/{archiveHub}/rendre-visible', [ArchiveHubController::class, 'rendreVisible'])->name('rendre_visible');
-        Route::patch('/{archiveHub}/masquer', [ArchiveHubController::class, 'masquer'])->name('masquer');
+    //         Route::patch('/{archiveHub}/rendre-visible', [ArchiveHubController::class, 'rendreVisible'])->name('rendre_visible');
+    //         Route::patch('/{archiveHub}/masquer', [ArchiveHubController::class, 'masquer'])->name('masquer');
 
-        Route::delete('/{archiveHub}/delete', [ArchiveHubController::class, 'supprimer'])->name('delete');
-    });
+    //         Route::delete('/{archiveHub}/delete', [ArchiveHubController::class, 'supprimer'])->name('delete');
+    //     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | PIECES JOINTES JURIDIQUES
-    |--------------------------------------------------------------------------
-    */
-    Route::prefix('pieces-jointes')->name('pieces-jointes.')->group(function () {
-        Route::get('/', [PieceJointeJuridiqueController::class, 'listeToutes'])->name('toutes');
-        Route::get('/contrats', [PieceJointeJuridiqueController::class, 'listeContrats'])->name('contrats');
-        Route::get('/engagements', [PieceJointeJuridiqueController::class, 'listeEngagements'])->name('engagements');
-        Route::get('/dossiers', [PieceJointeJuridiqueController::class, 'listeDossiers'])->name('dossiers');
+    //     /*
+    //     |--------------------------------------------------------------------------
+    //     | PIECES JOINTES JURIDIQUES
+    //     |--------------------------------------------------------------------------
+    //     */
+    //     Route::prefix('pieces-jointes')->name('pieces-jointes.')->group(function () {
+    //         Route::get('/', [PieceJointeJuridiqueController::class, 'listeToutes'])->name('toutes');
+    //         Route::get('/contrats', [PieceJointeJuridiqueController::class, 'listeContrats'])->name('contrats');
+    //         Route::get('/engagements', [PieceJointeJuridiqueController::class, 'listeEngagements'])->name('engagements');
+    //         Route::get('/dossiers', [PieceJointeJuridiqueController::class, 'listeDossiers'])->name('dossiers');
 
-        Route::get('/creer', [PieceJointeJuridiqueController::class, 'formulaireCreation'])->name('creer');
-        Route::post('/enregistrer', [PieceJointeJuridiqueController::class, 'enregistrer'])->name('enregistrer');
+    //         Route::get('/creer', [PieceJointeJuridiqueController::class, 'formulaireCreation'])->name('creer');
+    //         Route::post('/enregistrer', [PieceJointeJuridiqueController::class, 'enregistrer'])->name('enregistrer');
 
-        Route::get('/{pieceJointeJuridique}', [PieceJointeJuridiqueController::class, 'details'])->name('details');
-        Route::get('/{pieceJointeJuridique}/modifier', [PieceJointeJuridiqueController::class, 'formulaireEdition'])->name('modifier');
-        Route::put('/{pieceJointeJuridique}/update', [PieceJointeJuridiqueController::class, 'mettreAJour'])->name('update');
+    //         Route::get('/{pieceJointeJuridique}', [PieceJointeJuridiqueController::class, 'details'])->name('details');
+    //         Route::get('/{pieceJointeJuridique}/modifier', [PieceJointeJuridiqueController::class, 'formulaireEdition'])->name('modifier');
+    //         Route::put('/{pieceJointeJuridique}/update', [PieceJointeJuridiqueController::class, 'mettreAJour'])->name('update');
 
-        Route::delete('/{pieceJointeJuridique}/delete', [PieceJointeJuridiqueController::class, 'supprimer'])->name('delete');
-    });
-});
-
-
-
+    //         Route::delete('/{pieceJointeJuridique}/delete', [PieceJointeJuridiqueController::class, 'supprimer'])->name('delete');
+    //     });
+    // });
 
 
 
@@ -1627,8 +1651,9 @@ Route::prefix('chambre-juridique')->name('chambre-juridique.')->group(function (
 
 
 
-// Groupe de routes pour la formation
-Route::prefix('back/formation')->name('back.formation.')->middleware(['auth', 'admin'])->group(function () {
+
+// Groupe de routes pour la formation (sans middleware admin qui n'existe pas)
+Route::prefix('back/formation')->name('back.formation.')->middleware(['auth'])->group(function () {
 
     // Dashboard
     Route::get('/', [DashboardFormationController::class, 'index'])->name('dashboard');
@@ -1657,13 +1682,15 @@ Route::prefix('back/formation')->name('back.formation.')->middleware(['auth', 'a
     Route::post('chapitres/reorder', [ChapitreController::class, 'reorder'])->name('chapitres.reorder');
 
     // Contenus
-    Route::resource('contenus', ContenuController::class);
     Route::get('contenus/videos', [ContenuController::class, 'videos'])->name('contenus.videos');
     Route::get('contenus/documents', [ContenuController::class, 'documents'])->name('contenus.documents');
     Route::get('contenus/tutoriels', [ContenuController::class, 'tutoriels'])->name('contenus.tutoriels');
     Route::patch('contenus/{contenu}/toggle-visibility', [ContenuController::class, 'toggleVisibility'])->name('contenus.toggle-visibility');
     Route::get('contenus/{contenu}/download', [ContenuController::class, 'download'])->name('contenus.download');
     Route::post('contenus/reorder', [ContenuController::class, 'reorder'])->name('contenus.reorder');
+    Route::post('contenus/upload-ressource', [ContenuController::class, 'uploadRessource'])->name('contenus.upload-ressource');
+
+    Route::resource('contenus', ContenuController::class);
 
     // Inscriptions
     Route::resource('inscriptions', InscriptionController::class);
@@ -1671,6 +1698,29 @@ Route::prefix('back/formation')->name('back.formation.')->middleware(['auth', 'a
     Route::patch('inscriptions/{inscription}/valider', [InscriptionController::class, 'valider'])->name('inscriptions.valider');
     Route::patch('inscriptions/{inscription}/terminer', [InscriptionController::class, 'terminer'])->name('inscriptions.terminer');
     Route::patch('inscriptions/{inscription}/abandonner', [InscriptionController::class, 'abandonner'])->name('inscriptions.abandonner');
+
+
+
+    // Enseignants
+    Route::get('enseignants/actifs', [EnseignantController::class, 'actifs'])
+        ->name('enseignants.actifs');
+
+    // Formulaire général d'assignation
+    Route::get('enseignants/assigner', [EnseignantController::class, 'assignerForm'])
+        ->name('enseignants.assigner');
+
+    // Traitement de l'assignation
+    Route::post('enseignants/assigner-cours', [EnseignantController::class, 'assignerCours'])
+        ->name('enseignants.assigner-cours');
+
+    // Retirer un cours
+    Route::delete('enseignants/{enseignant}/retirer-cours/{cour}', [EnseignantController::class, 'retirerCours'])
+        ->name('enseignants.retirer-cours');
+
+    // Resource TOUJOURS après les routes spécifiques
+    Route::resource('enseignants', EnseignantController::class);
+
+
 
     // Présences
     Route::resource('presences', PresenceController::class);
@@ -1730,6 +1780,185 @@ Route::prefix('back/formation')->name('back.formation.')->middleware(['auth', 'a
 
 
 
+// ==================== CHAMBRE JURIDIQUE ====================
+Route::prefix('back/juridique')->name('back.juridique.')->middleware(['auth'])->group(function () {
+
+    // DASHBOARD
+    Route::get('/', [DashboardJuridiqueController::class, 'index'])->name('dashboard');
+    Route::get('/graphiques', [DashboardJuridiqueController::class, 'graphiques'])->name('graphiques');
+
+    // TYPES DE DOCUMENTS
+    Route::resource('types-documents', TypeDocumentController::class);
+    Route::patch('types-documents/{typeDocument}/toggle-active', [TypeDocumentController::class, 'toggleActive'])->name('types-documents.toggle-active');
+    Route::post('types-documents/reorder', [TypeDocumentController::class, 'reorder'])->name('types-documents.reorder');
+
+    // MODÈLES DE DOCUMENTS
+    Route::resource('modeles', ModeleDocumentController::class);
+    Route::get('modeles/actifs', [ModeleDocumentController::class, 'actifs'])->name('modeles.actifs');
+    Route::get('modeles/par-defaut', [ModeleDocumentController::class, 'parDefaut'])->name('modeles.par-defaut');
+    Route::patch('modeles/{modeleDocument}/toggle-active', [ModeleDocumentController::class, 'toggleActive'])->name('modeles.toggle-active');
+    Route::patch('modeles/{modeleDocument}/set-default', [ModeleDocumentController::class, 'setDefault'])->name('modeles.set-default');
+    Route::post('modeles/{modeleDocument}/preview', [ModeleDocumentController::class, 'preview'])->name('modeles.preview');
+
+    // DOCUMENTS
+    Route::resource('documents', DocumentController::class);
+    Route::get('documents/brouillons', [DocumentController::class, 'brouillons'])->name('documents.brouillons');
+    Route::get('documents/en-attente', [DocumentController::class, 'enAttente'])->name('documents.en-attente');
+    Route::get('documents/signes', [DocumentController::class, 'signes'])->name('documents.signes');
+    Route::get('documents/archives', [DocumentController::class, 'archives'])->name('documents.archives');
+    Route::patch('documents/{document}/valider', [DocumentController::class, 'valider'])->name('documents.valider');
+    Route::patch('documents/{document}/archiver', [DocumentController::class, 'archiver'])->name('documents.archiver');
+    Route::get('documents/{document}/generer-pdf', [DocumentController::class, 'genererPDF'])->name('documents.generer-pdf');
+
+    // SIGNATURES
+    Route::resource('signatures', SignatureController::class);
+    Route::get('signatures/en-attente', [SignatureController::class, 'enAttente'])->name('signatures.en-attente');
+    Route::get('signatures/signees', [SignatureController::class, 'signees'])->name('signatures.signees');
+    Route::post('signatures/{signature}/signer', [SignatureController::class, 'signer'])->name('signatures.signer');
+    Route::get('signatures/{signature}/recap', [SignatureController::class, 'recap'])->name('signatures.recap');
+    Route::post('signatures/{signature}/refuser', [SignatureController::class, 'refuser'])->name('signatures.refuser');
+    Route::post('signatures/reordonner', [SignatureController::class, 'reordonner'])->name('signatures.reordonner');
+    Route::post('signatures/{signature}/envoyer', [SignatureController::class, 'envoyer'])->name('signatures.envoyer');
+
+    // SIGNATURES PUBLIQUES (sans auth)
+    Route::get('signature/public/{token}', [SignatureController::class, 'verifierToken'])->name('signatures.public');
+    Route::post('signature/public/{token}', [SignatureController::class, 'signerPublic'])->name('signatures.public.store');
+
+    // CONTRATS
+    Route::resource('contrats', ContratController::class);
+    Route::get('contrats/actifs', [ContratController::class, 'actifs'])->name('contrats.actifs');
+    Route::get('contrats/expirants', [ContratController::class, 'expirants'])->name('contrats.expirants');
+    Route::get('contrats/expires', [ContratController::class, 'expires'])->name('contrats.expires');
+    Route::patch('contrats/{contrat}/renouveler', [ContratController::class, 'renouveler'])->name('contrats.renouveler');
+    Route::get('contrats/{contrat}/pdf', [ContratController::class, 'export'])->name('contrats.pdf');
+
+    // ENGAGEMENTS
+    Route::resource('engagements', EngagementController::class);
+    Route::get('engagements/actifs', [EngagementController::class, 'actifs'])->name('engagements.actifs');
+    Route::get('engagements/expires', [EngagementController::class, 'expires'])->name('engagements.expires');
+    Route::get('engagements/{engagement}/pdf', [EngagementController::class, 'export'])->name('engagements.pdf');
+
+    // DÉMARCHES ADMINISTRATIVES
+    Route::resource('demarches', DemarcheAdministrativeController::class);
+    Route::get('demarches/en-cours', [DemarcheAdministrativeController::class, 'enCours'])->name('demarches.en-cours');
+    Route::patch('demarches/{demarcheAdministrative}/toggle-active', [DemarcheAdministrativeController::class, 'toggleActive'])->name('demarches.toggle-active');
+
+    // CONFORMITÉS
+    Route::resource('conformites', ConformiteController::class);
+    Route::get('conformites/conformes', [ConformiteController::class, 'conformes'])->name('conformites.conformes');
+    Route::get('conformites/non-conformes', [ConformiteController::class, 'nonConformes'])->name('conformites.non-conformes');
+    Route::get('conformites/en-cours', [ConformiteController::class, 'enCours'])->name('conformites.en-cours');
+    Route::get('conformites/{conformite}/plan-action', [ConformiteController::class, 'planAction'])->name('conformites.plan-action');
+    Route::post('conformites/{conformite}/evaluer', [ConformiteController::class, 'evaluer'])->name('conformites.evaluer');
+    Route::post('conformites/{conformite}/ajouter-action', [ConformiteController::class, 'ajouterAction'])->name('conformites.ajouter-action');
+    Route::delete('conformites/{conformite}/supprimer-action', [ConformiteController::class, 'supprimerAction'])->name('conformites.supprimer-action');
+    Route::post('conformites/{conformite}/terminer-action', [ConformiteController::class, 'terminerAction'])->name('conformites.terminer-action');
+
+    // LITIGES
+    Route::resource('litiges', LitigeController::class);
+    Route::get('litiges/ouverts', [LitigeController::class, 'ouverts'])->name('litiges.ouverts');
+    Route::get('litiges/clos', [LitigeController::class, 'clos'])->name('litiges.clos');
+    Route::post('litiges/{litige}/historique', [LitigeController::class, 'ajouterHistorique'])->name('litiges.ajouter-historique');
+    Route::post('litiges/{litige}/cloturer', [LitigeController::class, 'cloturer'])->name('litiges.cloturer');
+
+    // CONSEILS JURIDIQUES
+    Route::resource('conseils', ConseilJuridiqueController::class);
+    Route::get('conseils/publies', [ConseilJuridiqueController::class, 'publies'])->name('conseils.publies');
+    Route::get('conseils/brouillons', [ConseilJuridiqueController::class, 'brouillons'])->name('conseils.brouillons');
+    Route::get('conseils/faq', [ConseilJuridiqueController::class, 'faq'])->name('conseils.faq');
+    Route::get('conseils/guides', [ConseilJuridiqueController::class, 'guides'])->name('conseils.guides');
+    Route::patch('conseils/{conseilJuridique}/publier', [ConseilJuridiqueController::class, 'publier'])->name('conseils.publier');
+    Route::patch('conseils/{conseilJuridique}/depublier', [ConseilJuridiqueController::class, 'depublier'])->name('conseils.depublier');
+
+    // TEXTES LÉGAUX
+    Route::resource('legalites', LegaliteController::class);
+    Route::get('legalites/lois', [LegaliteController::class, 'lois'])->name('legalites.lois');
+    Route::get('legalites/decrets', [LegaliteController::class, 'decrets'])->name('legalites.decrets');
+    Route::get('legalites/reglements', [LegaliteController::class, 'reglements'])->name('legalites.reglements');
+    Route::get('legalites/normes', [LegaliteController::class, 'normes'])->name('legalites.normes');
+    Route::get('legalites/en-vigueur', [LegaliteController::class, 'enVigueur'])->name('legalites.en-vigueur');
+    Route::patch('legalites/{legalite}/toggle-vigueur', [LegaliteController::class, 'toggleVigueur'])->name('legalites.toggle-vigueur');
+    Route::get('legalites/search', [LegaliteController::class, 'search'])->name('legalites.search');
+
+    // MENTIONS LÉGALES
+    Route::resource('mentions', MentionLegaleController::class);
+    Route::get('mentions/actives', [MentionLegaleController::class, 'actives'])->name('mentions.actives');
+    Route::patch('mentions/{mentionLegale}/activer', [MentionLegaleController::class, 'activer'])->name('mentions.activer');
+
+    // CGU/CGV
+    Route::resource('cgu', CguCgvController::class);
+    Route::get('cgu/cgu', [CguCgvController::class, 'cgu'])->name('cgu.cgu');
+    Route::get('cgu/cgv', [CguCgvController::class, 'cgv'])->name('cgu.cgv');
+    Route::get('cgu/actives', [CguCgvController::class, 'actives'])->name('cgu.actives');
+    Route::patch('cgu/{cguCgv}/activer', [CguCgvController::class, 'activer'])->name('cgu.activer');
+
+    // POLITIQUE CONFIDENTIALITÉ
+    Route::resource('politiques', PolitiqueConfidentialiteController::class);
+    Route::get('politiques/actives', [PolitiqueConfidentialiteController::class, 'actives'])->name('politiques.actives');
+    Route::patch('politiques/{politiqueConfidentialite}/activer', [PolitiqueConfidentialiteController::class, 'activer'])->name('politiques.activer');
+
+    // DÉMARCHES RGPD
+    Route::resource('rgpd', DemarcheRgpdController::class);
+    Route::get('rgpd/en-cours', [DemarcheRgpdController::class, 'enCours'])->name('rgpd.en-cours');
+    Route::get('rgpd/realisees', [DemarcheRgpdController::class, 'realisees'])->name('rgpd.realisees');
+    Route::get('rgpd/registre', [DemarcheRgpdController::class, 'registre'])->name('rgpd.registre');
+    Route::patch('rgpd/{demarcheRgpd}/valider', [DemarcheRgpdController::class, 'valider'])->name('rgpd.valider');
+
+    // ARCHIVES
+    Route::resource('archives', ArchiveJuridiqueController::class);
+    Route::get('archives/documents', [ArchiveJuridiqueController::class, 'documents'])->name('archives.documents');
+    Route::get('archives/contrats', [ArchiveJuridiqueController::class, 'contrats'])->name('archives.contrats');
+    Route::get('archives/litiges', [ArchiveJuridiqueController::class, 'litiges'])->name('archives.litiges');
+    Route::get('archives/politique', [ArchiveJuridiqueController::class, 'politiqueConservation'])->name('archives.politique');
+    Route::patch('archives/{archiveJuridique}/restaurer', [ArchiveJuridiqueController::class, 'restaurer'])->name('archives.restaurer');
+    Route::patch('archives/{archiveJuridique}/marquer-destruction', [ArchiveJuridiqueController::class, 'marquerADetruire'])->name('archives.marquer-destruction');
+
+    // GÉNÉRATION DE DOCUMENTS
+    Route::get('generation', [GenerationDocumentController::class, 'index'])->name('generation.index');
+    Route::get('generation/create', [GenerationDocumentController::class, 'create'])->name('generation.create');
+    Route::post('generation/preview', [GenerationDocumentController::class, 'preview'])->name('generation.preview');
+    Route::get('generation/variables/{modeleDocument}', [GenerationDocumentController::class, 'getVariables'])->name('generation.variables');
+    Route::get('generation/champs/{modeleDocument}', [GenerationDocumentController::class, 'getChampsRequis'])->name('generation.champs');
+
+    // VALIDATION
+    Route::get('validation', [ValidationJuridiqueController::class, 'index'])->name('validation.index');
+    Route::post('validation/document/{document}/valider', [ValidationJuridiqueController::class, 'validerDocument'])->name('validation.valider-document');
+    Route::post('validation/document/{document}/rejeter', [ValidationJuridiqueController::class, 'rejeterDocument'])->name('validation.rejeter-document');
+    Route::post('validation/signature/{signature}/valider', [ValidationJuridiqueController::class, 'validerSignature'])->name('validation.valider-signature');
+    Route::post('validation/signature/{signature}/rejeter', [ValidationJuridiqueController::class, 'rejeterSignature'])->name('validation.rejeter-signature');
+    Route::post('validation/document/{document}/verifier', [ValidationJuridiqueController::class, 'verifierConformite'])->name('validation.verifier-conformite');
+    Route::post('validation/batch', [ValidationJuridiqueController::class, 'batchValidation'])->name('validation.batch');
+    Route::get('validation/rapports', [ValidationJuridiqueController::class, 'rapports'])->name('validation.rapports');
+
+    // NOTIFICATIONS
+    Route::get('notifications', [NotificationJuridiqueController::class, 'index'])->name('notifications.index');
+    Route::get('notifications/non-lues', [NotificationJuridiqueController::class, 'nonLues'])->name('notifications.non-lues');
+    Route::get('notifications/{notification}', [NotificationJuridiqueController::class, 'show'])->name('notifications.show');
+    Route::patch('notifications/{notification}/read', [NotificationJuridiqueController::class, 'markAsRead'])->name('notifications.mark-read');
+    Route::post('notifications/mark-all-read', [NotificationJuridiqueController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+    Route::delete('notifications/{notification}', [NotificationJuridiqueController::class, 'destroy'])->name('notifications.destroy');
+    Route::get('notifications/preferences', [NotificationJuridiqueController::class, 'preferences'])->name('notifications.preferences');
+    Route::post('notifications/preferences', [NotificationJuridiqueController::class, 'updatePreferences'])->name('notifications.preferences.update');
+    Route::post('notifications/rappel-contrat/{contrat}', [NotificationJuridiqueController::class, 'envoyerRappel'])->name('notifications.rappel-contrat');
+    Route::post('notifications/rappel-signature/{document}', [NotificationJuridiqueController::class, 'envoyerRappelSignature'])->name('notifications.rappel-signature');
+
+    // STATISTIQUES
+    Route::get('statistiques', [StatistiqueJuridiqueController::class, 'index'])->name('statistiques.index');
+    Route::get('statistiques/export', [StatistiqueJuridiqueController::class, 'export'])->name('statistiques.export');
+
+    // RECHERCHE
+    Route::get('recherche', [RechercheJuridiqueController::class, 'index'])->name('recherche.index');
+    Route::get('recherche/autocomplete', [RechercheJuridiqueController::class, 'autocomplete'])->name('recherche.autocomplete');
+
+    // EXPORT
+    Route::get('export', [ExportJuridiqueController::class, 'index'])->name('export.index');
+    Route::post('export', [ExportJuridiqueController::class, 'export'])->name('export.export');
+
+    // ENTREPRISES
+    Route::resource('entreprises', EntrepriseController::class);
+    Route::get('entreprises/search', [EntrepriseController::class, 'search'])->name('entreprises.search');
+});
+
 
 
 
@@ -1747,17 +1976,3 @@ Route::prefix('back/formation')->name('back.formation.')->middleware(['auth', 'a
 
 
 require __DIR__ . '/auth.php';
-
-
-
-
-
-
-
-
-
-
-
-
-
-

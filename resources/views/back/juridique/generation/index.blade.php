@@ -1,0 +1,7 @@
+@extends('back.juridique.layouts.app')
+@section('title', 'Génération de documents')
+@section('page_title', 'Générateur de documents')
+@section('juridique-content')
+<div class="card"><div class="card-header"><h3 class="card-title"><i class="fas fa-magic mr-2"></i> Générer un document</h3></div><div class="card-body"><form method="GET" action="{{ route('back.juridique.generation.create') }}"><div class="row"><div class="col-md-8"><div class="form-group"><label for="modele_id">Choisir un modèle</label><select name="modele_id" id="modele_id" class="form-control select2" required><option value="">Sélectionner</option>@foreach($modeles as $m)<option value="{{ $m->id }}">{{ $m->titre }} ({{ $m->typeDocument->nom }}) - v{{ $m->version }}</option>@endforeach</select></div></div><div class="col-md-4"><div class="form-group"><label>&nbsp;</label><button type="submit" class="btn btn-primary btn-block">Commencer</button></div></div></div></form></div></div>
+<div class="card mt-3"><div class="card-header">Modèles récents</div><div class="card-body"><div class="row">@foreach($modeles->take(6) as $m)<div class="col-md-4 mb-2"><div class="border rounded p-2"><strong>{{ $m->titre }}</strong><br><small>{{ $m->typeDocument->nom }}</small><br><a href="{{ route('back.juridique.generation.create', ['modele_id' => $m->id]) }}" class="btn btn-sm btn-primary mt-1">Utiliser</a></div></div>@endforeach</div></div></div>
+@endsection

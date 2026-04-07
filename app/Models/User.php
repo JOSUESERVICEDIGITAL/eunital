@@ -22,6 +22,7 @@ use App\Models\EtudeFaisabilite;
 use App\Models\PrototypeIngenieurie;
 use App\Models\DossierTechnique;
 use App\Models\CreationGraphique;
+use App\Models\Formation\Enseignant;
 use Spatie\Permission\Traits\HasRoles; // Ajouter cette ligne
 
 class User extends Authenticatable
@@ -43,6 +44,7 @@ class User extends Authenticatable
         'est_actif',
         'dernier_acces',
         'bio',
+         'is_enseignant'
     ];
 
     /**
@@ -67,6 +69,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'est_actif' => 'boolean',
             'dernier_acces' => 'datetime',
+               'is_enseignant' => 'boolean',
         ];
     }
 
@@ -92,6 +95,18 @@ public function estResponsable()
     public function medias()
     {
         return $this->hasMany(Media::class, 'user_id');
+    }
+
+     // Relation avec l'enseignant (profil formateur)
+    public function enseignant()
+    {
+        return $this->hasOne(Enseignant::class, 'user_id');
+    }
+
+    // Vérifier si l'utilisateur est un enseignant
+    public function isEnseignant()
+    {
+        return $this->enseignant !== null;
     }
 
     public function ideesIngenieurie()

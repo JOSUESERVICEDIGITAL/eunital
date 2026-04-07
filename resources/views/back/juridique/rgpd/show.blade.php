@@ -1,0 +1,6 @@
+@extends('back.juridique.layouts.app')
+@section('title', $demarcheRgpd->titre)
+@section('page_title', $demarcheRgpd->titre)
+@section('juridique-content')
+<div class="row"><div class="col-md-4"><div class="card"><div class="card-header">Informations</div><div class="card-body"><dl><dt>Type</dt><dd>{{ $demarcheRgpd->type_label }}</dd><dt>Statut</dt><dd>@include('back.juridique.partials.status-badge', ['status' => $demarcheRgpd->statut])</dd><dt>Date réalisation</dt><dd>{{ $demarcheRgpd->date_realisation ? $demarcheRgpd->date_realisation->format('d/m/Y') : '-' }}</dd><dt>Date limite</dt><dd>{{ $demarcheRgpd->date_limite ? $demarcheRgpd->date_limite->format('d/m/Y') : '-' }}</dd></dl></div><div class="card-footer"><a href="{{ route('back.juridique.rgpd.edit', $demarcheRgpd) }}" class="btn btn-warning">Modifier</a><button onclick="valider({{ $demarcheRgpd->id }})" class="btn btn-success">Valider</button><a href="{{ route('back.juridique.rgpd.index') }}" class="btn btn-secondary">Retour</a></div></div></div><div class="col-md-8"><div class="card"><div class="card-header">Description</div><div class="card-body">{{ $demarcheRgpd->description }}</div></div><div class="card mt-3"><div class="card-header">Observations</div><div class="card-body">{{ $demarcheRgpd->observations ?? 'Aucune' }}</div></div></div></div>
+@endsection

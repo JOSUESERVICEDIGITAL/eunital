@@ -1,0 +1,12 @@
+@extends('back.juridique.layouts.app')
+@section('title', 'Générer un document')
+@section('page_title', 'Génération - ' . ($modele->titre ?? ''))
+@section('juridique-content')
+<div class="row"><div class="col-md-8"><div class="card"><div class="card-header">Remplir les informations</div><form action="{{ route('back.juridique.documents.store') }}" method="POST" id="generationForm">@csrf<div class="card-body"><input type="hidden" name="modele_document_id" value="{{ $modele->id }}"><input type="hidden" name="type_document_id" value="{{ $modele->type_document_id }}"><div class="form-group"><label for="titre">Titre *</label><input type="text" name="titre" id="titre" class="form-control" required></div><div class="form-group"><label for="description">Description</label><textarea name="description" id="description" rows="2" class="form-control"></textarea></div><h5>Variables du modèle</h5>@foreach($modele->variables ?? [] as $var)<div class="form-group"><label for="var_{{ $var }}">{{ ucfirst($var) }} @if(in_array($var, $modele->champs_requis ?? []))<span class="text-danger">*</span>@endif</label><input type="text" name="variables[{{ $var }}]" id="var_{{ $var }}" class="form-control" @if(in_array($var, $modele->champs_requis ?? [])) required @endif></div>@endforeach</div><div class="card-footer"><button type="submit" class="btn btn-primary">Générer le document</button><a href="{{ route('back.juridique.generation.index') }}" class="btn btn-secondary">Retour</a></div></form></div></div><div class="col-md-4"><div class="card"><div class="card-header">Aperçu</div><div class="card-body"><div id="preview" class="bg-light p-2" style="max-height: 400px; overflow: auto;">Sélectionnez un modèle pour voir l'aperçu</div></div></div><div class="card mt-3"><div class="card-header">Informations</div><div class="card-body"><p>Les champs marqués d'un * sont obligatoires.</p></div></div></div></div>
+@endsection
+
+@push('juridique-scripts')
+<script>
+    $('#titre').on('keyup', function() { $('#preview').html('<i class="fas fa-spinner fa-spin"></i> Génération...'); setTimeout(() => { let html = '<div class="alert alert-info">Aperçu du document:<br><strong>' + $(this).val() + '</strong></div>'; $('#preview').html(html); }, 500); });
+</script>
+@endpush

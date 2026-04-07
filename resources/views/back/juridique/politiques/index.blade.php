@@ -1,0 +1,6 @@
+@extends('back.juridique.layouts.app')
+@section('title', 'Politiques')
+@section('page_title', 'Politiques de confidentialité')
+@section('juridique-content')
+<div class="card"><div class="card-header"><h3 class="card-title"><i class="fas fa-shield-alt mr-2"></i> Politiques</h3><div class="card-tools"><a href="{{ route('back.juridique.politiques.create') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Nouvelle politique</a></div></div><div class="card-body p-0"><table class="table"><thead><tr><th>Titre</th><th>Version</th><th>Date effet</th><th>Statut</th><th>Actions</th></tr></thead><tbody>@forelse($politiques as $p)</td><td><strong>{{ $p->titre }}</strong></td><td>v{{ $p->version }}</td><td>{{ $p->date_effet->format('d/m/Y') }}</td><td>@include('back.juridique.partials.status-badge', ['status' => $p->is_active ? 'actif' : 'inactif'])</td><td><a href="{{ route('back.juridique.politiques.show', $p) }}" class="btn btn-sm btn-info">Voir</a><a href="{{ route('back.juridique.politiques.edit', $p) }}" class="btn btn-sm btn-warning">Modifier</a></td></tr>@empty<tr><td colspan="5">Aucune politique</td></tr>@endforelse</tbody></table></div><div class="card-footer">@include('back.juridique.partials.pagination', ['items' => $politiques])</div></div>
+@endsection

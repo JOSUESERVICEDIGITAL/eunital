@@ -1,0 +1,6 @@
+@extends('back.juridique.layouts.app')
+@section('title', 'CGU / CGV')
+@section('page_title', 'Conditions générales')
+@section('juridique-content')
+<div class="card"><div class="card-header"><h3 class="card-title"><i class="fas fa-file-contract mr-2"></i> CGU et CGV</h3><div class="card-tools"><a href="{{ route('back.juridique.cgu.create') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Nouvelle version</a></div></div><div class="card-body p-0"><table class="table"><thead><tr><th>Titre</th><th>Type</th><th>Version</th><th>Date effet</th><th>Statut</th><th>Actions</th></tr></thead><tbody>@forelse($cgus as $c)<tr><td><strong>{{ $c->titre }}</strong></td><td>{{ $c->type_label }}</td><td>v{{ $c->version }}</td><td>{{ $c->date_effet->format('d/m/Y') }}</td><td>@include('back.juridique.partials.status-badge', ['status' => $c->is_active ? 'actif' : 'inactif'])</td><td><a href="{{ route('back.juridique.cgu.show', $c) }}" class="btn btn-sm btn-info">Voir</a><a href="{{ route('back.juridique.cgu.edit', $c) }}" class="btn btn-sm btn-warning">Modifier</a></td></tr>@empty <td><td colspan="6">Aucune version</td></tr>@endforelse</tbody></table></div><div class="card-footer">@include('back.juridique.partials.pagination', ['items' => $cgus])</div></div>
+@endsection

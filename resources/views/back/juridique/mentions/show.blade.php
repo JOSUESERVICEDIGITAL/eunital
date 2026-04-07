@@ -1,0 +1,6 @@
+@extends('back.juridique.layouts.app')
+@section('title', $mentionLegale->titre)
+@section('page_title', $mentionLegale->titre)
+@section('juridique-content')
+<div class="row"><div class="col-md-4"><div class="card"><div class="card-header">Informations</div><div class="card-body"><dl><dt>Type</dt><dd>{{ $mentionLegale->type_label }}</dd><dt>Version</dt><dd>v{{ $mentionLegale->version }}</dd><dt>Date d'effet</dt><dd>{{ $mentionLegale->date_effet->format('d/m/Y') }}</dd><dt>Statut</dt><dd>@include('back.juridique.partials.status-badge', ['status' => $mentionLegale->is_active ? 'actif' : 'inactif'])</dd></dl></div><div class="card-footer"><a href="{{ route('back.juridique.mentions.edit', $mentionLegale) }}" class="btn btn-warning">Modifier</a><a href="{{ route('back.juridique.mentions.index') }}" class="btn btn-secondary">Retour</a></div></div></div><div class="col-md-8"><div class="card"><div class="card-header">Contenu</div><div class="card-body">{!! nl2br(e($mentionLegale->contenu)) !!}</div></div></div></div>
+@endsection

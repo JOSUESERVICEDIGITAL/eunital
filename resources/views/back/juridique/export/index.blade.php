@@ -1,0 +1,6 @@
+@extends('back.juridique.layouts.app')
+@section('title', 'Export')
+@section('page_title', 'Exporter des données')
+@section('juridique-content')
+<div class="card"><div class="card-header">Export de données</div><form method="POST" action="{{ route('back.juridique.export.export') }}">@csrf<div class="card-body"><div class="row"><div class="col-md-6"><div class="form-group"><label>Type de données</label><select name="type" class="form-control"><option value="documents">Documents</option><option value="contrats">Contrats</option><option value="litiges">Litiges</option><option value="legalites">Textes légaux</option><option value="tous">Tous</option></select></div></div><div class="col-md-6"><div class="form-group"><label>Format</label><select name="format" class="form-control"><option value="excel">Excel</option><option value="pdf">PDF</option><option value="csv">CSV</option></select></div></div></div><div class="row"><div class="col-md-6"><div class="form-group"><label>Date début</label><input type="date" name="date_debut" class="form-control"></div></div><div class="col-md-6"><div class="form-group"><label>Date fin</label><input type="date" name="date_fin" class="form-control"></div></div></div></div><div class="card-footer"><button type="submit" class="btn btn-primary">Exporter</button></div></form></div>
+@endsection

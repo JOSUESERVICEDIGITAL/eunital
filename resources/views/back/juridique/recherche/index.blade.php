@@ -1,0 +1,7 @@
+@extends('back.juridique.layouts.app')
+@section('title', 'Recherche')
+@section('page_title', 'Recherche juridique')
+@section('juridique-content')
+<div class="card"><div class="card-header"><form method="GET" class="form-inline"><input type="text" name="q" class="form-control mr-2" style="width: 300px;" placeholder="Rechercher..." value="{{ request('q') }}"><select name="type" class="form-control mr-2"><option value="tout">Tous</option><option value="document">Documents</option><option value="contrat">Contrats</option><option value="litige">Litiges</option><option value="legalite">Textes légaux</option><option value="conseil">Conseils</option></select><button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Rechercher</button></form></div></div>
+@if(request('q'))<div class="card mt-3"><div class="card-header">Résultats pour "{{ request('q') }}"</div><div class="card-body">@if($resultats && count($resultats) > 0)<div class="list-group">@foreach($resultats as $r)<a href="{{ $r['url'] }}" class="list-group-item list-group-item-action"><strong>{{ $r['titre'] }}</strong><br><small class="text-muted">{{ $r['type'] }} - {{ $r['description'] ?? '' }}</small></a>@endforeach</div>@else<div class="alert alert-info">Aucun résultat trouvé</div>@endif</div></div>@endif
+@endsection

@@ -1,0 +1,6 @@
+@extends('back.juridique.layouts.app')
+@section('title', 'Notifications')
+@section('page_title', 'Centre de notifications')
+@section('juridique-content')
+<div class="card"><div class="card-header"><h3 class="card-title"><i class="fas fa-bell mr-2"></i> Mes notifications</h3><div class="card-tools"><a href="{{ route('back.juridique.notifications.mark-all-read') }}" class="btn btn-secondary btn-sm">Tout marquer comme lu</a></div></div><div class="card-body p-0"><div class="list-group list-group-flush">@forelse($notifications as $n)<div class="list-group-item {{ !$n->is_read ? 'bg-light' : '' }}"><div class="d-flex justify-content-between"><div><i class="fas fa-{{ $n->type === 'signature' ? 'pen' : 'file' }} mr-2"></i><strong>{{ $n->message }}</strong><br><small class="text-muted">{{ $n->created_at->format('d/m/Y H:i') }}</small></div><div><a href="{{ route('back.juridique.notifications.show', $n) }}" class="btn btn-sm btn-info">Voir</a><button onclick="supprimer({{ $n->id }})" class="btn btn-sm btn-danger">Supprimer</button></div></div></div>@empty<div class="text-center py-4">Aucune notification</div>@endforelse</div></div><div class="card-footer">@include('back.juridique.partials.pagination', ['items' => $notifications])</div></div>
+@endsection

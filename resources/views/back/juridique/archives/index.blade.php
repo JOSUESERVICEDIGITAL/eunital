@@ -1,0 +1,6 @@
+@extends('back.juridique.layouts.app')
+@section('title', 'Archives')
+@section('page_title', 'Archives juridiques')
+@section('juridique-content')
+<div class="card"><div class="card-header"><h3 class="card-title"><i class="fas fa-archive mr-2"></i> Archives</h3><div class="card-tools"><a href="{{ route('back.juridique.archives.create') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Archiver</a></div></div><div class="card-body p-0"><table class="table"><thead><tr><th>Référence</th><th>Titre</th><th>Type</th><th>Date archivage</th><th>Conservation</th><th>Actions</th></tr></thead><tbody>@forelse($archives as $a)</td><td><code>{{ $a->reference }}</code></td><td>{{ $a->titre }}</td><td>{{ $a->type_label }}</td><td>{{ $a->date_archivage->format('d/m/Y') }}</td><td>{{ $a->statut_conservation_label }}</td></td><td><a href="{{ route('back.juridique.archives.show', $a) }}" class="btn btn-sm btn-info">Voir</a><button onclick="restaurer({{ $a->id }})" class="btn btn-sm btn-success">Restaurer</button></td></tr>@empty <td><td colspan="6">Aucune archive</td></tr>@endforelse</tbody></table></div><div class="card-footer">@include('back.juridique.partials.pagination', ['items' => $archives])</div></div>
+@endsection

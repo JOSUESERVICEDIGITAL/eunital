@@ -1,0 +1,8 @@
+@extends('back.juridique.layouts.app')
+@section('title', 'Statistiques')
+@section('page_title', 'Statistiques juridiques')
+@section('juridique-content')
+<div class="row"><div class="col-md-3"><div class="small-box bg-info"><div class="inner"><h3>{{ $stats['global']['total_documents'] }}</h3><p>Documents</p></div></div></div><div class="col-md-3"><div class="small-box bg-success"><div class="inner"><h3>{{ $stats['global']['total_contrats'] }}</h3><p>Contrats</p></div></div></div><div class="col-md-3"><div class="small-box bg-warning"><div class="inner"><h3>{{ $stats['global']['total_litiges'] }}</h3><p>Litiges</p></div></div></div><div class="col-md-3"><div class="small-box bg-danger"><div class="inner"><h3>{{ $stats['global']['taux_conformite'] }}%</h3><p>Conformité</p></div></div></div></div>
+<div class="row"><div class="col-md-6"><div class="card"><div class="card-header">Documents par mois</div><div class="card-body"><canvas id="documentsChart" height="250"></canvas></div></div></div><div class="col-md-6"><div class="card"><div class="card-header">Contrats par type</div><div class="card-body"><canvas id="contratsChart" height="250"></canvas></div></div></div></div>
+<div class="row"><div class="col-md-6"><div class="card"><div class="card-header">Litiges par statut</div><div class="card-body"><canvas id="litigesChart" height="250"></canvas></div></div></div><div class="col-md-6"><div class="card"><div class="card-header">Top utilisateurs</div><div class="card-body"><canvas id="topUsersChart" height="250"></canvas></div></div></div></div>
+@endsection

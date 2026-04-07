@@ -1,0 +1,7 @@
+@extends('back.juridique.layouts.app')
+@section('title', 'Rapports validation')
+@section('page_title', 'Rapports de validation')
+@section('juridique-content')
+<div class="row"><div class="col-md-3"><div class="info-box"><span class="info-box-icon bg-info"><i class="fas fa-file-alt"></i></span><div class="info-box-content"><span class="info-box-text">Documents validés</span><span class="info-box-number">{{ $stats['documents_valides'] }}</span></div></div></div><div class="col-md-3"><div class="info-box"><span class="info-box-icon bg-warning"><i class="fas fa-clock"></i></span><div class="info-box-content"><span class="info-box-text">En attente</span><span class="info-box-number">{{ $stats['documents_en_attente'] }}</span></div></div></div><div class="col-md-3"><div class="info-box"><span class="info-box-icon bg-success"><i class="fas fa-check-circle"></i></span><div class="info-box-content"><span class="info-box-text">Signatures effectuées</span><span class="info-box-number">{{ $stats['signatures_realisees'] }}</span></div></div></div><div class="col-md-3"><div class="info-box"><span class="info-box-icon bg-danger"><i class="fas fa-hourglass-half"></i></span><div class="info-box-content"><span class="info-box-text">Signatures attendues</span><span class="info-box-number">{{ $stats['signatures_attendues'] }}</span></div></div></div></div>
+<div class="card"><div class="card-header">Évolution</div><div class="card-body"><canvas id="evolutionChart" height="300"></canvas></div></div>
+@endsection
