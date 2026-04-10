@@ -30,7 +30,7 @@
             </form>
         </div>
     </div>
-    
+
     <div class="col-md-4">
         <div class="card">
             <div class="card-header">
@@ -50,7 +50,7 @@
                         <li><span class="badge badge-danger">Abandonné</span> - Module non finalisé</li>
                     </ul>
                 </div>
-                
+
                 <div class="mt-3">
                     <h6>À savoir :</h6>
                     <ul class="text-muted small">
@@ -61,7 +61,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="card mt-3">
             <div class="card-header">
                 <h3 class="card-title">
@@ -73,13 +73,13 @@
                 <dl class="row">
                     <dt class="col-sm-8">Total inscriptions</dt>
                     <dd class="col-sm-4"><span class="badge badge-primary">{{ $totalInscriptions ?? 0 }}</span></dd>
-                    
+
                     <dt class="col-sm-8">En attente</dt>
                     <dd class="col-sm-4"><span class="badge badge-warning">{{ $enAttente ?? 0 }}</span></dd>
-                    
+
                     <dt class="col-sm-8">Validées</dt>
                     <dd class="col-sm-4"><span class="badge badge-success">{{ $validees ?? 0 }}</span></dd>
-                    
+
                     <dt class="col-sm-8">Terminées</dt>
                     <dd class="col-sm-4"><span class="badge badge-info">{{ $terminees ?? 0 }}</span></dd>
                 </dl>

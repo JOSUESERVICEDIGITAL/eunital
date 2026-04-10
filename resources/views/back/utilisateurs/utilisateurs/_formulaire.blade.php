@@ -88,7 +88,7 @@
             @foreach($roles as $role)
                 <option value="{{ $role->id }}"
                     @selected(in_array($role->id, old('roles', isset($utilisateur) ? $utilisateur->roles->pluck('id')->toArray() : [])))>
-                    {{ $role->nom }}
+                    {{ $role->name }}
                 </option>
             @endforeach
         </select>

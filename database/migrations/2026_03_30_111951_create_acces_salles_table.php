@@ -10,13 +10,28 @@ return new class extends Migration
     {
         Schema::create('acces_salles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cour_id')->constrained('cours')->onDelete('cascade');
-            $table->string('code_acses');
-            $table->dateTime('generated_at');
-            $table->dateTime('expires_at');
+
+            // Relation avec le cours
+            $table->foreignId('cour_id')
+                  ->constrained('cours')
+                  ->cascadeOnDelete();
+
+            // Code d'accès (CORRIGÉ)
+            $table->string('code_acces')->unique();
+
+            // Dates
+            $table->timestamp('generated_at')->useCurrent();
+            $table->timestamp('expires_at')->nullable();
+
+            // Etat
             $table->boolean('is_active')->default(true);
-            $table->integer('max_utilisateurs')->nullable();
+
+            // Limite d'utilisateurs
+            $table->unsignedInteger('max_utilisateurs')->nullable();
+
+            // Utilisateurs actuellement connectés (JSON)
             $table->json('utilisateurs_actifs')->nullable();
+
             $table->timestamps();
         });
     }

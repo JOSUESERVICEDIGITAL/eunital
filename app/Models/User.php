@@ -23,12 +23,27 @@ use App\Models\PrototypeIngenieurie;
 use App\Models\DossierTechnique;
 use App\Models\CreationGraphique;
 use App\Models\Formation\Enseignant;
-use Spatie\Permission\Traits\HasRoles; // Ajouter cette ligne
+use App\Models\Formation\Progression;
+use App\Models\Formation\Inscription;
+use App\Models\Formation\Cour;
+use App\Models\Media;
+use App\Models\CampagneMarketing;
+use App\Models\PositionnementMarketing;
+use App\Models\ImageMarque;
+use App\Models\AcquisitionMarketing;
+use App\Models\CroissanceMarketing;
+use App\Models\TableauPerformanceMarketing;
+use App\Models\ProductionVideo;
+use App\Models\ProductionAudio;
+use App\Models\DiffusionStudio;
+use Spatie\Permission\Traits\HasRoles;
+use App\Models\Formation\SoumissionDevoir;
+
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, HasRoles;
+
     /**
      * Les attributs assignables en masse.
      *
@@ -44,7 +59,7 @@ class User extends Authenticatable
         'est_actif',
         'dernier_acces',
         'bio',
-         'is_enseignant'
+        'is_enseignant'
     ];
 
     /**
@@ -69,51 +84,101 @@ class User extends Authenticatable
             'password' => 'hashed',
             'est_actif' => 'boolean',
             'dernier_acces' => 'datetime',
-               'is_enseignant' => 'boolean',
+            'is_enseignant' => 'boolean',
         ];
     }
 
+    // ===============================
+    // MÉTHODES DE VÉRIFICATION DE RÔLES
+    // ===============================
 
-public function estAdministrateur()
-{
-    return $this->hasRole('administrateur');
-}
+    public function estAdministrateur()
+    {
+        return $this->hasRole('administrateur');
+    }
 
-public function estAuteur()
-{
-    return $this->hasRole('auteur');
-}
+    public function estAuteur()
+    {
+        return $this->hasRole('auteur');
+    }
 
-public function estResponsable()
-{
-    return $this->hasRole('responsable');
-}
+    public function estResponsable()
+    {
+        return $this->hasRole('responsable');
+    }
+
+    // ===============================
+    // RELATIONS PRINCIPALES
+    // ===============================
+
     public function membreEquipe()
     {
         return $this->hasOne(MembreEquipe::class, 'user_id');
     }
+
     public function medias()
     {
         return $this->hasMany(Media::class, 'user_id');
     }
 
-     // Relation avec l'enseignant (profil formateur)
+    // ===============================
+    // RELATIONS FORMATION
+    // ===============================
+
+    /**
+     * Relation avec l'enseignant (profil formateur)
+     */
     public function enseignant()
     {
         return $this->hasOne(Enseignant::class, 'user_id');
     }
 
-    // Vérifier si l'utilisateur est un enseignant
+    /**
+     * Relation avec les progressions de formation
+     */
+    public function progressions()
+    {
+        return $this->hasMany(Progression::class, 'user_id');
+    }
+
+    /**
+     * Relation avec les inscriptions
+     */
+    public function inscriptions()
+    {
+        return $this->hasMany(Inscription::class, 'user_id');
+    }
+
+    /**
+     * Relation avec les cours suivis
+     */
+    public function coursSuivis()
+    {
+        return $this->belongsToMany(Cour::class, 'cours_utilisateur', 'user_id', 'cour_id')
+                    ->withPivot('termine', 'progression', 'dernier_acces')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Vérifier si l'utilisateur est un enseignant
+     */
     public function isEnseignant()
     {
         return $this->enseignant !== null;
     }
 
+    // ===============================
+    // RELATIONS CHAMBRE INGÉNIEURS
+    // ===============================
+
     public function ideesIngenieurie()
     {
         return $this->hasMany(IdeeIngenieurie::class, 'auteur_id');
     }
-
+public function soumissionsDevoirs()
+{
+    return $this->hasMany(\App\Models\Formation\SoumissionDevoir::class, 'user_id');
+}
     public function ideesIngenieurieResponsables()
     {
         return $this->hasMany(IdeeIngenieurie::class, 'responsable_id');
@@ -144,6 +209,9 @@ public function estResponsable()
         return $this->hasMany(DossierTechnique::class, 'auteur_id');
     }
 
+    // ===============================
+    // RELATIONS CHAMBRE DÉVELOPPEMENT
+    // ===============================
 
     public function applicationsWeb()
     {
@@ -164,7 +232,6 @@ public function estResponsable()
     {
         return $this->hasMany(ApplicationMobile::class, 'responsable_id');
     }
-
 
     public function sitesVitrines()
     {
@@ -196,6 +263,9 @@ public function estResponsable()
         return $this->hasMany(DepotVersion::class, 'auteur_id');
     }
 
+    // ===============================
+    // RELATIONS CHAMBRE MARKETING
+    // ===============================
 
     public function campagnesMarketing()
     {
@@ -237,31 +307,40 @@ public function estResponsable()
         return $this->hasMany(TableauPerformanceMarketing::class, 'auteur_id');
     }
 
+    // ===============================
+    // RELATIONS CHAMBRE STUDIO
+    // ===============================
 
-  // ===============================
-// CHAMBRE STUDIO RELATIONS
-// ===============================
+    /**
+     * Vidéos créées
+     */
+    public function productionsVideo()
+    {
+        return $this->hasMany(ProductionVideo::class, 'auteur_id');
+    }
 
-// 🎬 Vidéos créées
-public function productionsVideo()
-{
-    return $this->hasMany(ProductionVideo::class, 'auteur_id');
-}
+    /**
+     * Audios créés
+     */
+    public function productionsAudio()
+    {
+        return $this->hasMany(ProductionAudio::class, 'auteur_id');
+    }
 
-// 🎧 Audios créés
-public function productionsAudio()
-{
-    return $this->hasMany(ProductionAudio::class, 'auteur_id');
-}
+    /**
+     * Diffusions gérées
+     */
+    public function diffusions()
+    {
+        return $this->hasMany(DiffusionStudio::class, 'responsable_id');
+    }
 
-// 📡 Diffusions gérées
-public function diffusions()
-{
-    return $this->hasMany(DiffusionStudio::class, 'responsable_id');
-}
+    // ===============================
+    // RELATIONS CHAMBRE GRAPHISME
+    // ===============================
 
-public function creationsGraphiques()
-{
-    return $this->hasMany(CreationGraphique::class, 'auteur_id');
-}
+    public function creationsGraphiques()
+    {
+        return $this->hasMany(CreationGraphique::class, 'auteur_id');
+    }
 }

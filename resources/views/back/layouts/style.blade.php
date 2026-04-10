@@ -1637,4 +1637,22 @@
             right: 0;
         }
     }
+
+
+
+    #statutSelect.en_attente {
+    color: #ffc107; /* jaune */
+}
+
+#statutSelect.valide {
+    color: #198754; /* vert */
+}
+
+#statutSelect.termine {
+    color: #0d6efd; /* bleu */
+}
+
+#statutSelect.abandonne {
+    color: #dc3545; /* rouge */
+}
 </style>

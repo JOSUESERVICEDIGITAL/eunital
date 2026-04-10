@@ -25,7 +25,7 @@
                         @foreach($roles as $role)
                             <option value="{{ $role->id }}"
                                 @selected($utilisateur->roles->pluck('id')->contains($role->id))>
-                                {{ $role->nom }}
+                                {{ $role->name }}
                             </option>
                         @endforeach
                     </select>

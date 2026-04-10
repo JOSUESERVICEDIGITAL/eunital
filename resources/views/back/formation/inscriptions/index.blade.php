@@ -140,13 +140,29 @@
                     </div>
                     <div class="form-group">
                         <label>Statut</label>
-                        <select name="statut" class="form-control">
-                            <option value="">Tous</option>
-                            <option value="en_attente" {{ request('statut') == 'en_attente' ? 'selected' : '' }}>En attente</option>
-                            <option value="valide" {{ request('statut') == 'valide' ? 'selected' : '' }}>Validé</option>
-                            <option value="termine" {{ request('statut') == 'termine' ? 'selected' : '' }}>Terminé</option>
-                            <option value="abandonne" {{ request('statut') == 'abandonne' ? 'selected' : '' }}>Abandonné</option>
-                        </select>
+                        <select name="statut" class="form-control text-dark" id="statutSelect">
+    <option value="">Tous</option>
+
+    <option value="en_attente" 
+        {{ request('statut') == 'en_attente' ? 'selected' : '' }}>
+        ⏳ En attente
+    </option>
+
+    <option value="valide" 
+        {{ request('statut') == 'valide' ? 'selected' : '' }}>
+        ✔ Validé
+    </option>
+
+    <option value="termine" 
+        {{ request('statut') == 'termine' ? 'selected' : '' }}>
+        🎯 Terminé
+    </option>
+
+    <option value="abandonne" 
+        {{ request('statut') == 'abandonne' ? 'selected' : '' }}>
+        ❌ Abandonné
+    </option>
+</select>
                     </div>
                     <div class="form-group">
                         <label>Date début</label>
@@ -168,6 +184,7 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function validerInscription(id) {
         Swal.fire({

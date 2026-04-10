@@ -193,3 +193,20 @@
         });
     });
 </script>
+<script>
+const select = document.getElementById('statutSelect');
+
+function updateColor() {
+    select.classList.remove('en_attente', 'valide', 'termine', 'abandonne');
+
+    if (select.value) {
+        select.classList.add(select.value);
+    }
+}
+
+// au chargement
+updateColor();
+
+// au changement
+select.addEventListener('change', updateColor);
+</script>

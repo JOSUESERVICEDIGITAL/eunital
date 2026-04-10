@@ -20,7 +20,7 @@ class AttributionRoleController extends Controller
     public function formulaireAttributionUtilisateur(User $utilisateur)
     {
         $roles = Role::where('est_actif', true)
-            ->orderBy('nom')
+            ->orderBy('name')
             ->get();
 
         $utilisateur->load('roles');

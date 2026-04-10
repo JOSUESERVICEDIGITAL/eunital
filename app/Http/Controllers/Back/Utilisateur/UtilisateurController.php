@@ -72,7 +72,7 @@ class UtilisateurController extends Controller
     {
         $roles = Role::where('est_actif', true)->get();
 
-        return view('back.utilisateurs.creer', compact('roles'));
+        return view('back.utilisateurs.utilisateurs.creer', compact('roles'));
     }
 
     public function formulaireEdition(User $utilisateur)
