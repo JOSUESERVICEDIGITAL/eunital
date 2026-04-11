@@ -16,7 +16,7 @@
         'avance' => 'warning',
         'expert' => 'danger',
     ];
-    
+
     $statusLabels = [
         'active' => 'Actif',
         'inactive' => 'Inactif',
@@ -34,7 +34,7 @@
         'avance' => 'Avancé',
         'expert' => 'Expert',
     ];
-    
+
     $class = $statusClasses[$status] ?? 'secondary';
     $label = $statusLabels[$status] ?? ucfirst($status);
 @endphp

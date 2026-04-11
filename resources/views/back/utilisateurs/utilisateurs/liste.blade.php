@@ -185,65 +185,16 @@
                                     </td>
 
                                     <td class="text-end">
-                                        <div class="d-inline-flex flex-wrap gap-2 justify-content-end">
-                                            <a href="{{ route('back.utilisateurs.details', $utilisateur) }}" class="btn btn-sm btn-light rounded-pill px-3">
-                                                <i class="fa-solid fa-eye me-1"></i>Voir
-                                            </a>
+    <button type="button"
+            class="btn btn-sm btn-light rounded-circle"
+            data-bs-toggle="modal"
+            data-bs-target="#modalActionsUtilisateur{{ $utilisateur->id }}"
+            title="Actions">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+    </button>
 
-                                            <a href="{{ route('back.utilisateurs.modifier', $utilisateur) }}" class="btn btn-sm btn-warning rounded-pill px-3">
-                                                <i class="fa-solid fa-pen me-1"></i>Modifier
-                                            </a>
-
-                                            <a href="{{ route('back.attributions.utilisateur.roles', $utilisateur) }}" class="btn btn-sm btn-outline-dark rounded-pill px-3">
-                                                <i class="fa-solid fa-user-gear me-1"></i>Rôles
-                                            </a>
-
-                                            @if(!$utilisateur->est_actif)
-                                                <form method="POST" action="{{ route('back.utilisateurs.activer', $utilisateur) }}">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <button type="submit" class="btn btn-sm btn-outline-success rounded-pill px-3">
-                                                        <i class="fa-solid fa-check me-1"></i>Activer
-                                                    </button>
-                                                </form>
-                                            @else
-                                                <form method="POST" action="{{ route('back.utilisateurs.desactiver', $utilisateur) }}">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <button type="submit" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
-                                                        <i class="fa-solid fa-ban me-1"></i>Désactiver
-                                                    </button>
-                                                </form>
-                                            @endif
-
-                                            @if($utilisateur->statut_compte !== 'suspendu')
-                                                <form method="POST" action="{{ route('back.utilisateurs.suspendre', $utilisateur) }}">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
-                                                        <i class="fa-solid fa-user-lock me-1"></i>Suspendre
-                                                    </button>
-                                                </form>
-                                            @else
-                                                <form method="POST" action="{{ route('back.utilisateurs.retablir', $utilisateur) }}">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <button type="submit" class="btn btn-sm btn-outline-success rounded-pill px-3">
-                                                        <i class="fa-solid fa-rotate-left me-1"></i>Rétablir
-                                                    </button>
-                                                </form>
-                                            @endif
-
-                                            <button type="button"
-                                                    class="btn btn-sm btn-outline-danger rounded-pill px-3"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modalSuppressionUtilisateur{{ $utilisateur->id }}">
-                                                <i class="fa-solid fa-trash me-1"></i>Supprimer
-                                            </button>
-                                        </div>
-
-                                        @include('back.utilisateurs.utilisateurs._modales', ['utilisateur' => $utilisateur])
-                                    </td>
+    @include('back.utilisateurs.utilisateurs._modales', ['utilisateur' => $utilisateur])
+</td>
                                 </tr>
                             @empty
                                 <tr>
