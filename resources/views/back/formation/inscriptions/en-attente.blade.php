@@ -2,87 +2,125 @@
 
 @section('title', 'Inscriptions en attente')
 @section('page_title', 'Inscriptions en attente de validation')
-@section('page_subtitle', 'Liste des inscriptions à valider')
+@section('page_subtitle', 'Liste des inscriptions à traiter rapidement')
 
 @section('formation-content')
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title">
-            <i class="fas fa-clock text-warning mr-2"></i>
-            Inscriptions en attente
-        </h3>
-        <div class="card-tools">
-            <span class="badge badge-warning badge-lg">{{ $inscriptions->total() }} en attente</span>
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center flex-wrap">
+        <div>
+            <h3 class="card-title mb-1">
+                <i class="fas fa-clock text-warning mr-2"></i>
+                Inscriptions en attente
+            </h3>
+            <small class="text-muted">Valide, rejette ou consulte rapidement les nouvelles demandes.</small>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+            <span class="badge badge-warning badge-lg px-3 py-2">{{ $inscriptions->total() }} en attente</span>
+
+            <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#bulkToolsModal">
+                <i class="fas fa-bolt mr-1"></i> Actions
+            </button>
         </div>
     </div>
+
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-striped table-hover">
-                <thead>
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
                     <tr>
-                        <th style="width: 50px">#</th>
+                        <th style="width: 60px">#</th>
                         <th>Étudiant</th>
                         <th>Module</th>
-                        <th>Date demande</th>
-                        <th>Actions</th>
+                        <th>Demande</th>
+                        <th style="width: 150px">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($inscriptions as $inscription)
-                    <tr>
-                        <td>{{ $inscription->id }}</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="avatar-circle mr-2" style="width: 35px; height: 35px; font-size: 14px;">
-                                    {{ substr($inscription->user->name, 0, 1) }}
+                        <tr>
+                            <td class="text-muted font-weight-bold">#{{ $inscription->id }}</td>
+
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-circle mr-2" style="width: 38px; height: 38px; font-size: 15px;">
+                                        {{ strtoupper(substr($inscription->user->name, 0, 1)) }}
+                                    </div>
+                                    <div>
+                                        <div class="font-weight-bold">{{ $inscription->user->name }}</div>
+                                        <small class="text-muted">{{ $inscription->user->email }}</small>
+                                    </div>
                                 </div>
-                                <div>
-                                    <strong>{{ $inscription->user->name }}</strong>
-                                    <br>
-                                    <small class="text-muted">{{ $inscription->user->email }}</small>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <a href="{{ route('back.formation.modules.show', $inscription->module) }}" class="text-info">
-                                {{ $inscription->module->titre }}
-                            </a>
-                        </td>
-                        <td>
-                            {{ $inscription->created_at->format('d/m/Y H:i') }}
-                            <br>
-                            <small class="text-muted">Il y a {{ $inscription->created_at->diffForHumans() }}</small>
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-success" onclick="validerInscription({{ $inscription->id }})">
-                                    <i class="fas fa-check-circle"></i> Valider
-                                </button>
-                                <button type="button" class="btn btn-sm btn-danger" onclick="rejeterInscription({{ $inscription->id }})">
-                                    <i class="fas fa-times-circle"></i> Rejeter
-                                </button>
-                                <a href="{{ route('back.formation.inscriptions.show', $inscription) }}" class="btn btn-sm btn-info">
-                                    <i class="fas fa-eye"></i>
+                            </td>
+
+                            <td>
+                                <a href="{{ route('back.formation.modules.show', $inscription->module) }}" class="text-info font-weight-bold">
+                                    {{ $inscription->module->titre }}
                                 </a>
-                            </div>
-                        </td>
-                    </tr>
+                            </td>
+
+                            <td>
+                                <div>{{ $inscription->created_at->format('d/m/Y H:i') }}</div>
+                                <small class="text-muted">{{ $inscription->created_at->diffForHumans() }}</small>
+                            </td>
+
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-light btn-sm rounded-circle border" type="button" data-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+
+                                    <div class="dropdown-menu dropdown-menu-right shadow-sm border-0">
+                                        <button type="button" class="dropdown-item text-success" onclick="validerInscription({{ $inscription->id }})">
+                                            <i class="fas fa-check-circle mr-2"></i> Valider
+                                        </button>
+
+                                        <button type="button" class="dropdown-item text-danger" onclick="rejeterInscription({{ $inscription->id }})">
+                                            <i class="fas fa-times-circle mr-2"></i> Rejeter
+                                        </button>
+
+                                        <a href="{{ route('back.formation.inscriptions.show', $inscription) }}" class="dropdown-item">
+                                            <i class="fas fa-eye text-info mr-2"></i> Voir
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                     @empty
-                    <tr>
-                        <td colspan="5" class="text-center py-4">
-                            <i class="fas fa-check-circle fa-3x text-success mb-3 d-block"></i>
-                            Aucune inscription en attente
-                            <br>
-                            <span class="text-muted">Toutes les inscriptions ont été traitées</span>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <i class="fas fa-check-circle fa-3x text-success mb-3 d-block"></i>
+                                <div class="font-weight-bold">Aucune inscription en attente</div>
+                                <div class="text-muted">Toutes les inscriptions ont été traitées.</div>
+                            </td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
     </div>
-    <div class="card-footer">
+
+    <div class="card-footer bg-white">
         @include('back.formation.partials.pagination', ['items' => $inscriptions])
+    </div>
+</div>
+
+<div class="modal fade" id="bulkToolsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title"><i class="fas fa-bolt mr-2"></i> Traitement rapide</h5>
+                <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body text-center">
+                <a href="{{ route('back.formation.inscriptions.index') }}" class="btn btn-primary m-1">
+                    <i class="fas fa-list mr-1"></i> Toutes les inscriptions
+                </a>
+                <a href="{{ route('back.formation.inscriptions.create') }}" class="btn btn-success m-1">
+                    <i class="fas fa-plus mr-1"></i> Nouvelle inscription
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
@@ -91,8 +129,8 @@
 <script>
     function validerInscription(id) {
         Swal.fire({
-            title: 'Valider l\'inscription',
-            text: 'L\'étudiant pourra accéder au module une fois validé.',
+            title: 'Valider l’inscription ?',
+            text: 'L’étudiant pourra accéder au module.',
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#28a745',
@@ -108,21 +146,19 @@
                         _token: '{{ csrf_token() }}',
                         _method: 'PATCH'
                     },
-                    success: function(response) {
-                        if(response.success) {
-                            Swal.fire('Validé!', 'L\'inscription a été validée', 'success');
-                            location.reload();
-                        }
+                    success: function() {
+                        Swal.fire('Validé', 'L’inscription a été validée.', 'success')
+                            .then(() => location.reload());
                     }
                 });
             }
         });
     }
-    
+
     function rejeterInscription(id) {
         Swal.fire({
-            title: 'Rejeter l\'inscription',
-            text: 'Cette action est irréversible. L\'étudiant sera notifié.',
+            title: 'Rejeter l’inscription ?',
+            text: 'Cette action supprimera la demande en attente.',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#dc3545',
@@ -138,11 +174,9 @@
                         _token: '{{ csrf_token() }}',
                         _method: 'DELETE'
                     },
-                    success: function(response) {
-                        if(response.success) {
-                            Swal.fire('Rejeté!', 'L\'inscription a été rejetée', 'error');
-                            location.reload();
-                        }
+                    success: function() {
+                        Swal.fire('Rejeté', 'L’inscription a été rejetée.', 'success')
+                            .then(() => location.reload());
                     }
                 });
             }

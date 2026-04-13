@@ -89,7 +89,7 @@ class DashboardFormationController extends Controller
                 return $item['a_corriger'] > 0;
             });
 
-        return view('back.formation.dashboard', compact(
+        return view('back.formation.dashboard.index', compact(
             'stats',
             'derniersCours',
             'dernieresInscriptions',

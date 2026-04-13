@@ -102,6 +102,8 @@ use App\Http\Controllers\Back\Formation\{
     EnseignantController,
 };
 
+use App\Http\Controllers\Back\Formation\SalleController;
+
 
 
 
@@ -1664,6 +1666,8 @@ Route::prefix('back/formation')->name('back.formation.')->middleware(['auth'])->
     Route::patch('categories-modules/{categorieModule}/toggle-active', [CategorieModuleController::class, 'toggleActive'])->name('categories-modules.toggle-active');
     Route::post('categories-modules/reorder', [CategorieModuleController::class, 'reorder'])->name('categories-modules.reorder');
 
+
+
     // Modules
     Route::resource('modules', ModuleController::class);
     Route::patch('modules/{module}/toggle-active', [ModuleController::class, 'toggleActive'])->name('modules.toggle-active');
@@ -1693,12 +1697,30 @@ Route::prefix('back/formation')->name('back.formation.')->middleware(['auth'])->
     Route::resource('contenus', ContenuController::class);
 
     // Inscriptions
-    Route::resource('inscriptions', InscriptionController::class);
-    Route::get('inscriptions/en-attente', [InscriptionController::class, 'enAttente'])->name('inscriptions.en-attente');
-    Route::patch('inscriptions/{inscription}/valider', [InscriptionController::class, 'valider'])->name('inscriptions.valider');
-    Route::patch('inscriptions/{inscription}/terminer', [InscriptionController::class, 'terminer'])->name('inscriptions.terminer');
-    Route::patch('inscriptions/{inscription}/abandonner', [InscriptionController::class, 'abandonner'])->name('inscriptions.abandonner');
+    Route::get('inscriptions/en-attente', [InscriptionController::class, 'enAttente'])
+        ->name('inscriptions.en-attente');
 
+    Route::patch('inscriptions/{inscription}/valider', [InscriptionController::class, 'valider'])
+        ->name('inscriptions.valider');
+
+    Route::patch('inscriptions/{inscription}/terminer', [InscriptionController::class, 'terminer'])
+        ->name('inscriptions.terminer');
+
+    Route::patch('inscriptions/{inscription}/abandonner', [InscriptionController::class, 'abandonner'])
+        ->name('inscriptions.abandonner');
+
+    Route::resource('inscriptions', InscriptionController::class);
+
+
+    Route::get('/salles/acceder', [SalleController::class, 'accederForm'])->name('salles.acceder-form');
+    Route::post('/salles/acceder', [SalleController::class, 'accederParCode'])->name('salles.acceder-code');
+
+    Route::patch('/salles/{salle}/ouvrir', [SalleController::class, 'ouvrir'])->name('salles.ouvrir');
+    Route::patch('/salles/{salle}/fermer', [SalleController::class, 'fermer'])->name('salles.fermer');
+    Route::patch('/salles/{salle}/activer', [SalleController::class, 'activer'])->name('salles.activer');
+    Route::patch('/salles/{salle}/desactiver', [SalleController::class, 'desactiver'])->name('salles.desactiver');
+
+    Route::resource('salles', SalleController::class);
 
 
     // Enseignants
@@ -1727,12 +1749,22 @@ Route::prefix('back/formation')->name('back.formation.')->middleware(['auth'])->
     Route::get('presences/rapport', [PresenceController::class, 'rapport'])->name('presences.rapport');
 
     // Accès salles
+    Route::patch('acces-salles/{accesSalle}/desactiver', [AccesSalleController::class, 'desactiver'])
+        ->name('acces-salles.desactiver');
+
+    Route::patch('acces-salles/{accesSalle}/activer', [AccesSalleController::class, 'activer'])
+        ->name('acces-salles.activer');
+
+    Route::delete('acces-salles/{accesSalle}/deconnecter/{user}', [AccesSalleController::class, 'deconnecterUtilisateur'])
+        ->name('acces-salles.deconnecter');
+
+    Route::post('cours/{cour}/generer-code', [AccesSalleController::class, 'genererNouveauCode'])
+        ->name('cours.generer-code');
+    Route::post('acces-salles/verifier-code', [AccesSalleController::class, 'verifierCode'])
+        ->name('acces-salles.verifier-code');
+    Route::post('/salles/{salle}/dupliquer', [SalleController::class, 'dupliquer'])->name('salles.dupliquer');
+
     Route::resource('acces-salles', AccesSalleController::class);
-    Route::patch('acces-salles/{accesSalle}/desactiver', [AccesSalleController::class, 'desactiver'])->name('acces-salles.desactiver');
-    Route::patch('acces-salles/{accesSalle}/activer', [AccesSalleController::class, 'activer'])->name('acces-salles.activer');
-    Route::post('acces-salles/{accesSalle}/deconnecter/{user}', [AccesSalleController::class, 'deconnecterUtilisateur'])->name('acces-salles.deconnecter');
-    Route::post('cours/{cour}/generer-code', [AccesSalleController::class, 'genererNouveauCode'])->name('cours.generer-code');
-    Route::post('acces-salles/verifier-code', [AccesSalleController::class, 'verifierCode'])->name('acces-salles.verifier-code');
 
     // Devoirs
     Route::resource('devoirs', DevoirController::class);
@@ -1959,7 +1991,7 @@ Route::prefix('back/juridique')->name('back.juridique.')->middleware(['auth'])->
     Route::get('entreprises/search', [EntrepriseController::class, 'search'])->name('entreprises.search');
 });
 
-
+Route::get('/access-salle/verifier', [App\Http\Controllers\Back\Formation\AccesSalleController::class, 'verifierCodeGet'])->name('public.access-salle.verifier');
 
 
 

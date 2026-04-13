@@ -32,6 +32,9 @@ return new class extends Migration
             // Utilisateurs actuellement connectés (JSON)
             $table->json('utilisateurs_actifs')->nullable();
 
+            // Horodatage des connexions des utilisateurs (AJOUTÉ)
+            $table->json('utilisateurs_connexion')->nullable();
+
             $table->timestamps();
         });
     }

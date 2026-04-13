@@ -1725,11 +1725,11 @@
                                     <li><a href="{{ route('back.formation.enseignants.actifs') }}"
                                             class="nested-submenu-link">Enseignants actifs</a></li>
                                     <li>
-    <a href="{{ route('back.formation.enseignants.assigner') }}"
-       class="nested-submenu-link">
-        Assigner un cours
-    </a>
-</li>
+                                        <a href="{{ route('back.formation.enseignants.assigner') }}"
+                                            class="nested-submenu-link">
+                                            Assigner un cours
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -1851,6 +1851,50 @@
                                 </ul>
                             </div>
                         </li>
+
+
+
+                        {{-- SALLES PÉDAGOGIQUES --}}
+                        <li class="submenu-nested-item">
+                            <button class="submenu-link submenu-toggle-btn" type="button"
+                                data-target="#menuFormationSalles" aria-expanded="false">
+                                <span><i class="fa-solid fa-school me-2"></i> Salles pédagogiques</span>
+                                <i class="fa-solid fa-chevron-down submenu-caret"></i>
+                            </button>
+
+                            <div class="nested-submenu-wrap" id="menuFormationSalles">
+                                <ul class="nested-submenu">
+                                    <li>
+                                        <a href="{{ route('back.formation.salles.index') }}"
+                                            class="nested-submenu-link {{ request()->routeIs('back.formation.salles.index') ? 'active' : '' }}">
+                                            <i class="fa-solid fa-table-list me-2"></i> Toutes les salles
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="{{ route('back.formation.salles.create') }}"
+                                            class="nested-submenu-link {{ request()->routeIs('back.formation.salles.create') ? 'active' : '' }}">
+                                            <i class="fa-solid fa-plus me-2"></i> Créer une salle
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="{{ route('back.formation.salles.acceder-form') }}"
+                                            class="nested-submenu-link {{ request()->routeIs('back.formation.salles.acceder-form') ? 'active' : '' }}">
+                                            <i class="fa-solid fa-key me-2"></i> Accéder par code
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="{{ route('back.formation.acces-salles.index') }}"
+                                            class="nested-submenu-link {{ request()->routeIs('back.formation.acces-salles.*') ? 'active' : '' }}">
+                                            <i class="fa-solid fa-qrcode me-2"></i> QR / Codes d’accès
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
 
                         {{-- PRÉSENCES & ACCÈS --}}
                         <li class="submenu-nested-item">

@@ -15,7 +15,7 @@ class EnseignantController extends Controller
         $enseignants = Enseignant::with('user', 'cours')
             ->orderBy('created_at', 'desc')
             ->paginate(15);
-        
+
         return view('back.formation.enseignants.index', compact('enseignants'));
     }
 
@@ -25,7 +25,7 @@ class EnseignantController extends Controller
             ->where('is_active', true)
             ->orderBy('created_at', 'desc')
             ->paginate(15);
-        
+
         return view('back.formation.enseignants.index', compact('enseignants'));
     }
 
@@ -34,7 +34,7 @@ public function create()
 {
     $existingEnseignantIds = Enseignant::pluck('user_id')->toArray();
     $users = User::whereNotIn('id', $existingEnseignantIds)->get();
-    
+
     // Debug - vérifier qu'il y a des utilisateurs
     if ($users->isEmpty()) {
         // Créer un utilisateur de test si nécessaire
@@ -45,15 +45,14 @@ public function create()
         ]);
         $users = User::whereNotIn('id', $existingEnseignantIds)->get();
     }
-    
+
     return view('back.formation.enseignants.create', compact('users'));
 }
 
 public function store(Request $request)
 {
-    // Debug - voir ce qui est envoyé
-    \Log::info('Données reçues:', $request->all());
-    
+
+
     $data = $request->validate([
         'user_id' => 'required|exists:users,id|unique:enseignants,user_id',
         'specialite' => 'nullable|string|max:255',
@@ -198,4 +197,15 @@ public function assignerCours(Request $request)
             ->back()
             ->with('success', 'Cours retiré avec succès.');
     }
+
+    public function destroy($id)
+{
+    $enseignant = \App\Models\User::findOrFail($id);
+
+    $enseignant->delete();
+
+    return redirect()
+        ->route('back.formation.enseignants.index')
+        ->with('success', 'Enseignant supprimé avec succès.');
+}
 }
