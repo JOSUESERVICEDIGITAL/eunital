@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Juridique\SignatureRequest;
 use App\Models\Juridique\Signature;
 use App\Models\Juridique\Document;
+use App\Models\Juridique\NotificationJuridique;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -43,8 +44,8 @@ class SignatureController extends Controller
     public function create()
     {
         $documents = Document::where('statut', 'en_attente')
-            ->where('type_document_id', function($q) {
-                $q->select('id')->from('types_documents')->where('necessite_signature', true);
+            ->whereHas('typeDocument', function($q) {
+                $q->where('necessite_signature', true);
             })
             ->get();
 
@@ -61,7 +62,7 @@ class SignatureController extends Controller
 
         // Mettre à jour le document si c'est la première signature
         $document = Document::find($data['document_id']);
-        if ($document->statut === 'en_attente') {
+        if ($document && $document->statut === 'en_attente') {
             $document->update(['statut' => 'signature_attendue']);
         }
 
@@ -118,9 +119,15 @@ class SignatureController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public validerDocument(Signature $signature)
+    public function validerDocument(Signature $signature)
     {
         $document = $signature->document;
+
+        if (!$document) {
+            return redirect()
+                ->route('back.juridique.signatures.index')
+                ->with('error', 'Document non trouvé.');
+        }
 
         // Vérifier que toutes les signatures sont faites
         $signaturesEnAttente = $document->signatures()
@@ -135,31 +142,42 @@ class SignatureController extends Controller
 
             // Envoyer des notifications
             $this->notifierValidation($document);
+
+            return redirect()
+                ->route('back.juridique.documents.show', $document)
+                ->with('success', 'Toutes les signatures sont complétées.');
         }
 
         return redirect()
             ->route('back.juridique.documents.show', $document)
-            ->with('success', 'Toutes les signatures sont complétées.');
+            ->with('warning', 'Toutes les signatures ne sont pas encore complétées.');
     }
 
     private function notifierValidation(Document $document)
     {
+        // Vérifier si le modèle NotificationJuridique existe
+        if (!class_exists(NotificationJuridique::class)) {
+            return;
+        }
+
         // Notification aux signataires
         foreach ($document->signatures as $signature) {
             \App\Models\Juridique\NotificationJuridique::create([
                 'user_id' => $signature->user_id,
                 'type' => 'document_signe',
                 'message' => "Le document '{$document->titre}' a été complètement signé.",
-                'data' => ['document_id' => $document->id]
+                'data' => json_encode(['document_id' => $document->id])
             ]);
         }
 
         // Notification au créateur
-        \App\Models\Juridique\NotificationJuridique::create([
-            'user_id' => $document->cree_par,
-            'type' => 'document_valide',
-            'message' => "Le document '{$document->titre}' a été signé par toutes les parties.",
-            'data' => ['document_id' => $document->id]
-        ]);
+        if ($document->cree_par) {
+            \App\Models\Juridique\NotificationJuridique::create([
+                'user_id' => $document->cree_par,
+                'type' => 'document_valide',
+                'message' => "Le document '{$document->titre}' a été signé par toutes les parties.",
+                'data' => json_encode(['document_id' => $document->id])
+            ]);
+        }
     }
 }

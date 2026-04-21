@@ -1260,33 +1260,94 @@
 
                 {{-- Chambre RH --}}
                 <li class="menu-dropdown-item">
-                    <button class="menu-item menu-toggle-btn" type="button" data-target="#menuChambreRH"
-                        aria-expanded="false">
-                        <div class="menu-left">
-                            <div class="menu-icon bg-success-subtle text-success">
-                                <i class="fa-solid fa-people-roof"></i>
-                            </div>
-                            <div class="menu-texts">
-                                <div class="menu-text">Chambre ressources humaines</div>
-                                <div class="menu-subtext">Personnel, suivi humain, recrutement</div>
-                            </div>
-                        </div>
-                        <div class="menu-right">
-                            <span class="badge-pill">6</span>
-                            <i class="fa-solid fa-chevron-down menu-caret"></i>
-                        </div>
-                    </button>
-                    <div class="submenu-wrap" id="menuChambreRH">
-                        <ul class="submenu">
-                            <li><a href="#" class="submenu-link">Recrutement</a></li>
-                            <li><a href="#" class="submenu-link">Dossiers du personnel</a></li>
-                            <li><a href="#" class="submenu-link">Présences</a></li>
-                            <li><a href="#" class="submenu-link">Évaluations</a></li>
-                            <li><a href="#" class="submenu-link">Discipline</a></li>
-                            <li><a href="#" class="submenu-link">Bien-être au travail</a></li>
-                        </ul>
-                    </div>
-                </li>
+    <button class="menu-item menu-toggle-btn {{ request()->routeIs('rh.*') ? 'active' : '' }}"
+        type="button"
+        data-target="#menuChambreRH"
+        aria-expanded="{{ request()->routeIs('rh.*') ? 'true' : 'false' }}">
+        <div class="menu-left">
+            <div class="menu-icon bg-success-subtle text-success">
+                <i class="fa-solid fa-people-roof"></i>
+            </div>
+            <div class="menu-texts">
+                <div class="menu-text">Chambre ressources humaines</div>
+                <div class="menu-subtext">Personnel, suivi humain, recrutement</div>
+            </div>
+        </div>
+        <div class="menu-right">
+            <span class="badge-pill">9</span>
+            <i class="fa-solid fa-chevron-down menu-caret"></i>
+        </div>
+    </button>
+
+    <div class="submenu-wrap {{ request()->routeIs('rh.*') ? 'show' : '' }}" id="menuChambreRH">
+        <ul class="submenu">
+
+            <li>
+                <a href="{{ route('rh.dashboard') }}"
+                   class="submenu-link {{ request()->routeIs('rh.dashboard*') ? 'active' : '' }}">
+                    Dashboard RH
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('rh.dossiers-personnel.index') }}"
+                   class="submenu-link {{ request()->routeIs('rh.dossiers-personnel*') ? 'active' : '' }}">
+                    Dossiers du personnel
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('rh.conges.index') }}"
+                   class="submenu-link {{ request()->routeIs('rh.conges*') ? 'active' : '' }}">
+                    Congés
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('rh.recrutements.index') }}"
+                   class="submenu-link {{ request()->routeIs('rh.recrutements*') ? 'active' : '' }}">
+                    Recrutements
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('rh.candidatures.index') }}"
+                   class="submenu-link {{ request()->routeIs('rh.candidatures*') ? 'active' : '' }}">
+                    Candidatures
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('rh.presences.index') }}"
+                   class="submenu-link {{ request()->routeIs('rh.presences*') ? 'active' : '' }}">
+                    Présences
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('rh.evaluations.index') }}"
+                   class="submenu-link {{ request()->routeIs('rh.evaluations*') ? 'active' : '' }}">
+                    Évaluations
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('rh.sanctions.index') }}"
+                   class="submenu-link {{ request()->routeIs('rh.sanctions*') ? 'active' : '' }}">
+                    Discipline & sanctions
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('rh.bien-etre.index') }}"
+                   class="submenu-link {{ request()->routeIs('rh.bien-etre*') ? 'active' : '' }}">
+                    Bien-être au travail
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</li>
 
                 {{-- Chambre rénovation & innovation --}}
                 <li class="menu-dropdown-item">

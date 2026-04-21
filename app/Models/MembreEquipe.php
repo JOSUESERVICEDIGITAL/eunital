@@ -90,4 +90,34 @@ class MembreEquipe extends Model
     {
         return $this->statut === 'inactif';
     }
+
+    public function dossierPersonnel()
+{
+    return $this->hasOne(\App\Models\RH\DossierPersonnel::class, 'membre_equipe_id');
+}
+
+public function presencesRh()
+{
+    return $this->hasMany(\App\Models\RH\PresenceRh::class, 'membre_equipe_id');
+}
+
+public function congesRh()
+{
+    return $this->hasMany(\App\Models\RH\CongeRh::class, 'membre_equipe_id');
+}
+
+public function evaluationsRh()
+{
+    return $this->hasMany(\App\Models\RH\EvaluationRh::class, 'membre_equipe_id');
+}
+
+public function sanctionsDisciplinaires()
+{
+    return $this->hasMany(\App\Models\RH\SanctionDisciplinaire::class, 'membre_equipe_id');
+}
+
+public function bienEtreTravail()
+{
+    return $this->hasMany(\App\Models\RH\BienEtreTravail::class, 'membre_equipe_id');
+}
 }
