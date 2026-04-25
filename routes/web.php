@@ -2006,6 +2006,7 @@ Route::get('/access-salle/verifier', [App\Http\Controllers\Back\Formation\AccesS
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/back/rh.php';
+require __DIR__.'/back/innovations.php';
 
 
 

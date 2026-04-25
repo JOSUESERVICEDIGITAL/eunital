@@ -2,25 +2,27 @@
     <div class="sidebar-top">
 
         {{-- En-tête du sidebar --}}
-        <div class="brand">
-            <div class="brand-left">
-                <div class="brand-logo">
-                    <i class="fa-solid fa-layer-group"></i>
-                </div>
-                <div class="brand-text">
-                    <div class="brand-title">EUNITAL</div>
-                    <div class="brand-subtitle">Hub Digital Admin</div>
-                </div>
-            </div>
-
-            <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" type="button" title="Réduire le menu">
-                <i class="fa-solid fa-angles-left"></i>
-            </button>
+       <div class="brand">
+    <div class="brand-left" id="brandToggle" style="cursor:pointer;">
+        <div class="brand-logo">
+            <i class="fa-solid fa-layer-group"></i>
         </div>
+        <div class="brand-text">
+            <div class="brand-title">EUNITAL</div>
+            <div class="brand-subtitle">Hub Digital Admin</div>
+        </div>
+    </div>
+
+    <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" type="button" title="Réduire le menu">
+        <i class="fa-solid fa-angles-left"></i>
+    </button>
+</div>
+
 
         <div class="sidebar-scroll">
 
             {{-- TABLEAU DE BORD --}}
+            //
             <div class="menu-group-title">Tableau de bord</div>
             <ul class="menu">
                 <li>
@@ -1350,33 +1352,167 @@
 </li>
 
                 {{-- Chambre rénovation & innovation --}}
-                <li class="menu-dropdown-item">
-                    <button class="menu-item menu-toggle-btn" type="button" data-target="#menuChambreInnovationHub"
-                        aria-expanded="false">
-                        <div class="menu-left">
-                            <div class="menu-icon bg-warning-subtle text-warning">
-                                <i class="fa-solid fa-lightbulb"></i>
-                            </div>
-                            <div class="menu-texts">
-                                <div class="menu-text">Chambre rénovation & innovation</div>
-                                <div class="menu-subtext">Améliorations et idées nouvelles</div>
-                            </div>
-                        </div>
-                        <div class="menu-right">
-                            <span class="badge-pill">5</span>
-                            <i class="fa-solid fa-chevron-down menu-caret"></i>
-                        </div>
-                    </button>
-                    <div class="submenu-wrap" id="menuChambreInnovationHub">
-                        <ul class="submenu">
-                            <li><a href="#" class="submenu-link">Propositions d’amélioration</a></li>
-                            <li><a href="#" class="submenu-link">Innovations en cours</a></li>
-                            <li><a href="#" class="submenu-link">Réformes internes</a></li>
-                            <li><a href="#" class="submenu-link">Expérimentations</a></li>
-                            <li><a href="#" class="submenu-link">Suivi des innovations</a></li>
-                        </ul>
-                    </div>
-                </li>
+             
+{{-- Chambre rénovation & innovation --}}
+<li class="menu-dropdown-item">
+
+    {{-- NIVEAU 1 --}}
+    <button class="menu-item menu-toggle-btn" type="button"
+        data-target="#menuInnovationMain"
+        aria-expanded="{{ request()->routeIs('back.innovations.*') ? 'true' : 'false' }}">
+
+        <div class="menu-left">
+            <div class="menu-icon bg-warning-subtle text-warning">
+                <i class="fa-solid fa-lightbulb"></i>
+            </div>
+
+            <div class="menu-texts">
+                <div class="menu-text">Chambre innovation</div>
+                <div class="menu-subtext">Pilotage & transformation</div>
+            </div>
+        </div>
+
+        <div class="menu-right">
+            <i class="fa-solid fa-chevron-down menu-caret"></i>
+        </div>
+    </button>
+
+    <div class="submenu-wrap {{ request()->routeIs('back.innovations.*') ? 'open' : '' }}"
+        id="menuInnovationMain">
+
+        <ul class="submenu">
+
+            {{-- ============================= --}}
+            {{-- 🔹 PILOTAGE --}}
+            {{-- ============================= --}}
+            <li class="menu-dropdown-item">
+<button class="submenu-link submenu-toggle-btn" type="button"
+    data-target="#submenuPilotage"
+    aria-expanded="{{ request()->routeIs('back.innovations.dashboard', 'back.innovations.pilotage', 'back.innovations.cartographie', 'back.innovations.alertes') ? 'true' : 'false' }}">
+    <i class="fa-solid fa-gauge-high"></i>
+    <span>Pilotage général</span>
+    <i class="fa-solid fa-chevron-down ms-auto"></i>
+</button>
+
+<div class="submenu-wrap" id="submenuPilotage">
+
+                    <ul class="submenu">
+
+                        <li>
+                            <a href="{{ route('back.innovations.dashboard') }}" class="submenu-link">
+                                Dashboard
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('back.innovations.pilotage') }}" class="submenu-link">
+                                Pilotage stratégique
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('back.innovations.cartographie') }}" class="submenu-link">
+                                Cartographie
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('back.innovations.alertes') }}" class="submenu-link">
+                                Alertes
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </li>
+
+
+            {{-- ============================= --}}
+            {{-- 🔹 BLOC 1 --}}
+            {{-- ============================= --}}
+            <li class="menu-dropdown-item">
+
+                <button class="submenu-link submenu-toggle-btn" type="button"
+    data-target="#submenuBloc1"
+    aria-expanded="{{ request()->routeIs(
+        'back.innovations.portefeuilles.*',
+        'back.innovations.innovations.*',
+        'back.innovations.propositions.*',
+        'back.innovations.idees.*',
+        'back.innovations.reformes.*',
+        'back.innovations.experimentations.*',
+        'back.innovations.deploiements.*',
+        'back.innovations.suivis.*',
+        'back.innovations.impacts.*',
+        'back.innovations.comites.*',
+        'back.innovations.financements.*'
+    ) ? 'true' : 'false' }}">
+    <i class="fa-solid fa-layer-group"></i>
+    <span>Bloc 1 — Modules centraux</span>
+    <i class="fa-solid fa-chevron-down ms-auto"></i>
+</button>
+
+<div class="submenu-wrap" id="submenuBloc1">
+
+                    <ul class="submenu">
+
+                        <li><a href="{{ route('back.innovations.portefeuilles.index') }}" class="submenu-link">Portefeuilles</a></li>
+                        <li><a href="{{ route('back.innovations.innovations.index') }}" class="submenu-link">Innovations</a></li>
+                        <li><a href="{{ route('back.innovations.propositions.index') }}" class="submenu-link">Propositions</a></li>
+                        <li><a href="{{ route('back.innovations.idees.index') }}" class="submenu-link">Idées</a></li>
+                        <li><a href="{{ route('back.innovations.reformes.index') }}" class="submenu-link">Réformes</a></li>
+                        <li><a href="{{ route('back.innovations.experimentations.index') }}" class="submenu-link">Expérimentations</a></li>
+                        <li><a href="{{ route('back.innovations.deploiements.index') }}" class="submenu-link">Déploiements</a></li>
+                        <li><a href="{{ route('back.innovations.suivis.index') }}" class="submenu-link">Suivis</a></li>
+                        <li><a href="{{ route('back.innovations.impacts.index') }}" class="submenu-link">Impacts</a></li>
+                        <li><a href="{{ route('back.innovations.comites.index') }}" class="submenu-link">Comités</a></li>
+                        <li><a href="{{ route('back.innovations.financements.index') }}" class="submenu-link">Financements</a></li>
+
+                    </ul>
+                </div>
+            </li>
+
+
+            {{-- ============================= --}}
+            {{-- 🔹 BLOC 2 --}}
+            {{-- ============================= --}}
+            <li class="menu-dropdown-item">
+
+             <button class="submenu-link submenu-toggle-btn" type="button"
+    data-target="#submenuBloc2"
+    aria-expanded="{{ request()->routeIs(
+        'back.innovations.objectifs.*',
+        'back.innovations.indicateurs.*',
+        'back.innovations.documents.*',
+        'back.innovations.actions.*',
+        'back.innovations.risques.*',
+        'back.innovations.decisions.*'
+    ) ? 'true' : 'false' }}">
+    <i class="fa-solid fa-sliders"></i>
+    <span>Bloc 2 — Suivi détaillé</span>
+    <i class="fa-solid fa-chevron-down ms-auto"></i>
+</button>
+
+<div class="submenu-wrap" id="submenuBloc2">
+
+                    <ul class="submenu">
+
+                        <li><a href="{{ route('back.innovations.objectifs.index') }}" class="submenu-link">Objectifs</a></li>
+                        <li><a href="{{ route('back.innovations.indicateurs.index') }}" class="submenu-link">Indicateurs</a></li>
+                        <li><a href="{{ route('back.innovations.documents.index') }}" class="submenu-link">Documents</a></li>
+                        <li><a href="{{ route('back.innovations.actions.index') }}" class="submenu-link">Actions</a></li>
+                        <li><a href="{{ route('back.innovations.risques.index') }}" class="submenu-link">Risques</a></li>
+                        <li><a href="{{ route('back.innovations.decisions.index') }}" class="submenu-link">Décisions</a></li>
+
+                    </ul>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</li>
+
+
 
                 {{-- Développement --}}
                 <li class="menu-dropdown-item">

@@ -374,5 +374,18 @@
             if (popup.contains(e.target)) return;
             removeFloatingPopup();
         }, true);
+
+        const brandToggle = document.getElementById('brandToggle');
+
+        brandToggle?.addEventListener('click', () => {
+            if (isMobile()) {
+                sidebar?.classList.contains('mobile-open') ?
+                    closeMobileSidebar() :
+                    openMobileSidebar();
+            } else {
+                toggleDesktopSidebar();
+            }
+        });
+
     });
 </script>
